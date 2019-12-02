@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>König und Turm gegen König</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>König und Turm gegen König</h1>
+<div class="slides">
+<div>
+<div>
+<h1>König und Turm gegen König</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: ktk.cpp</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
+<br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">Piece</span> {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">file</span>;<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">rank</span>;<br/>
+<span class="in1"></span>};<br/>
+<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">ostream</span> &amp;<span class="var">operator</span>&lt;&lt;(<span class="type">std</span>::<span class="type">ostream</span> &amp;<span class="var">out</span>, <span class="type">const</span> <span class="type">Piece</span> &amp;<span class="var">p</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">out</span> &lt;&lt; (<span class="type">char</span>) (<span class="var">p</span>.<span class="var">file</span> + <span class="str">'a'</span>) &lt;&lt; (<span class="type">char</span>) (<span class="var">p</span>.<span class="var">rank</span> + <span class="str">'1'</span>);<br/>
+<span class="in1"></span>}<br/>
+<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">istream</span> &amp;<span class="var">operator</span>&gt;&gt;(<span class="type">std</span>::<span class="type">istream</span> &amp;<span class="keyword">in</span>, <span class="type">Piece</span> &amp;<span class="var">p</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">s</span>;<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">s</span>.<span class="fn">size</span>() != <span class="num">2</span> || <span class="var">s</span>[<span class="num">0</span>] &lt; <span class="str">'a'</span> || <span class="var">s</span>[<span class="num">0</span>] &gt; <span class="str">'h'</span> || <span class="var">s</span>[<span class="num">1</span>] &lt; <span class="str">'1'</span> || <span class="var">s</span>[<span class="num">1</span>] &gt; <span class="str">'8'</span>) {<br/>
+<span class="in3"></span><span class="keyword">in</span> &gt;&gt; <span class="var">s</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="var">p</span>.<span class="var">file</span> = <span class="var">s</span>[<span class="num">0</span>] - <span class="str">'a'</span>;<br/>
+<span class="in2"></span><span class="var">p</span>.<span class="var">rank</span> = <span class="var">s</span>[<span class="num">1</span>] - <span class="str">'1'</span>;<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="keyword">in</span>;<br/>
+<span class="in1"></span>}<br/>
+<br/>
+<span class="in1"></span><span class="type">int</span> <span class="fn">main</span>() {<br/>
+<span class="in2"></span><span class="type">Piece</span> <span class="var">white_king</span>, <span class="var">white_rook</span>, <span class="var">black_king</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Turmendspiel nach Torres y Quevedo\n\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Eingabe der Ausgangsstellung\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"weisser König:  "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">white_king</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"weisser Turm:   "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">white_rook</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"schwarzer Turm: "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">black_king</span>;<br/>
+<br/>
+<span class="in2"></span><span class="keyword">for</span> (;;) {<br/>
+<span class="in3"></span><span class="type">bool</span> <span class="var">king_moved</span> { <span class="num">false</span> };<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">black_king</span>.<span class="var">file</span> &lt;= <span class="num">2</span> &amp;&amp; <span class="var">white_rook</span>.<span class="var">file</span> &lt;= <span class="num">2</span>) {<br/>
+<span class="in4"></span><span class="var">white_rook</span>.<span class="var">file</span> = <span class="num">7</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">black_king</span>.<span class="var">file</span> &gt;= <span class="num">5</span> &amp;&amp; <span class="var">white_rook</span>.<span class="var">file</span> &gt;= <span class="num">5</span>) {<br/>
+<span class="in4"></span><span class="var">white_rook</span>.<span class="var">file</span> = <span class="num">0</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">white_rook</span>.<span class="var">rank</span> - <span class="var">black_king</span>.<span class="var">rank</span> &gt; <span class="num">1</span>) {<br/>
+<span class="in4"></span>--<span class="var">white_rook</span>.<span class="var">rank</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">white_king</span>.<span class="var">rank</span> - <span class="var">black_king</span>.<span class="var">rank</span> &gt; <span class="num">2</span>) {<br/>
+<span class="in4"></span>--<span class="var">white_king</span>.<span class="var">rank</span>;<br/>
+<span class="in4"></span><span class="var">king_moved</span> = <span class="num">true</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="type">int</span> <span class="var">diff</span> = <span class="var">black_king</span>.<span class="var">file</span> - <span class="var">white_king</span>.<span class="var">file</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">diff</span> == <span class="num">0</span>) {<br/>
+<span class="in5"></span>--<span class="var">white_rook</span>.<span class="var">rank</span>;<br/>
+<span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">diff</span> % <span class="num">2</span> == <span class="num">0</span>) {<br/>
+<span class="in5"></span><span class="var">white_king</span>.<span class="var">file</span> += <span class="var">diff</span> &lt; <span class="num">0</span> ? -<span class="num">1</span> : <span class="num">1</span>;<br/>
+<span class="in5"></span><span class="var">king_moved</span> = <span class="num">true</span>;<br/>
+<span class="in4"></span>} <span class="keyword">else</span> {<br/>
+<span class="in5"></span><span class="keyword">switch</span> (<span class="var">white_rook</span>.<span class="var">file</span>) {<br/>
+<span class="in6"></span><span class="keyword">case</span> <span class="num">1</span>:<br/>
+<span class="in6"></span><span class="keyword">case</span> <span class="num">2</span>:<br/>
+<span class="in6"></span><span class="keyword">case</span> <span class="num">3</span>:<br/>
+<span class="in6"></span><span class="keyword">case</span> <span class="num">7</span>:<br/>
+<span class="in7"></span>--<span class="var">white_rook</span>.<span class="var">file</span>;<br/>
+<span class="in7"></span><span class="keyword">break</span>;<br/>
+<span class="in6"></span><span class="keyword">default</span>:<br/>
+<span class="in7"></span>++<span class="var">white_rook</span>.<span class="var">file</span>;<br/>
+<span class="in5"></span>}<br/>
+<span class="in4"></span>}<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">king_moved</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"ziehe König: "</span> &lt;&lt; <span class="var">white_king</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"ziehe Turm: "</span> &lt;&lt; <span class="var">white_rook</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">white_rook</span>.<span class="var">rank</span> == <span class="num">0</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"MATT\n"</span>;<br/>
+<span class="in5"></span><span class="keyword">break</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Ihr Zug: "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">black_king</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">file: ktk.cpp</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>
