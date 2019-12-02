@@ -25,10 +25,25 @@
 	int main() {
 		Piece white_king, white_rook, black_king;
 		std::cout << "Turmendspiel nach Torres y Quevedo\n\n";
-		std::cout << "Eingabe der Ausgangsstellung\n";
-		std::cout << "weisser König:  "; std::cin >> white_king;
-		std::cout << "weisser Turm:   "; std::cin >> white_rook;
-		std::cout << "schwarzer Turm: "; std::cin >> black_king;
+		for (;;) {
+			std::cout << "Eingabe der Ausgangsstellung\n";
+			std::cout << "weißer König:    "; std::cin >> white_king;
+			std::cout << "weißer Turm:     "; std::cin >> white_rook;
+			std::cout << "schwarzer König: "; std::cin >> black_king;
+			if (white_rook.file > 2 && white_rook.file < 5) {
+				std::cout << "Turm nicht in einer Zone\n";
+				continue;
+			}
+			if (black_king.rank >= white_rook.rank) {
+				std::cout << "schwarzer König oberhalb des Turms\n";
+				continue;
+			}
+			if (white_rook.rank >= white_king.rank) {
+				std::cout << "Turm oberhalb des weißen Königs\n";
+				continue;
+			}
+			break;
+		}
 
 		for (;;) {
 			bool king_moved { false };

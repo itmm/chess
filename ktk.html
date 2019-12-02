@@ -39,10 +39,25 @@
 <span class="in1"></span><span class="type">int</span> <span class="fn">main</span>() {<br/>
 <span class="in2"></span><span class="type">Piece</span> <span class="var">white_king</span>, <span class="var">white_rook</span>, <span class="var">black_king</span>;<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Turmendspiel nach Torres y Quevedo\n\n"</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Eingabe der Ausgangsstellung\n"</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"weisser König:  "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">white_king</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"weisser Turm:   "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">white_rook</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"schwarzer Turm: "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">black_king</span>;<br/>
+<span class="in2"></span><span class="keyword">for</span> (;;) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Eingabe der Ausgangsstellung\n"</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"weißer König:    "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">white_king</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"weißer Turm:     "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">white_rook</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"schwarzer König: "</span>; <span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">black_king</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">white_rook</span>.<span class="var">file</span> &gt; <span class="num">2</span> &amp;&amp; <span class="var">white_rook</span>.<span class="var">file</span> &lt; <span class="num">5</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Turm nicht in einer Zone\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">continue</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">black_king</span>.<span class="var">rank</span> &gt;= <span class="var">white_rook</span>.<span class="var">rank</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"schwarzer König oberhalb des Turms\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">continue</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">white_rook</span>.<span class="var">rank</span> &gt;= <span class="var">white_king</span>.<span class="var">rank</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Turm oberhalb des weißen Königs\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">continue</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">break</span>;<br/>
+<span class="in2"></span>}<br/>
 <br/>
 <span class="in2"></span><span class="keyword">for</span> (;;) {<br/>
 <span class="in3"></span><span class="type">bool</span> <span class="var">king_moved</span> { <span class="num">false</span> };<br/>
