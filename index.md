@@ -4,3 +4,7 @@
 @inc(ktk.md)
 ```
 
+```
+@inc(chess.md)
+```
+

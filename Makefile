@@ -6,9 +6,11 @@ hx-run: $(MDs)
 	@echo "HX"
 	@hx
 	@date >hx-run
-	@make --no-print-directory ktk
+	@make --no-print-directory ktk chess
 
-ktk: $(CPPs)
+ktk: ktk.cpp
+
+chess: chess.cpp
 
 clean:
 	@echo "RM"
