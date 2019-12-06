@@ -48,6 +48,25 @@
 
 ```
 @add(globals)
+	constexpr signed char X { 100 };
+	constexpr signed char EE { 0 };
+	constexpr signed char WP { 1 };
+	constexpr signed char WR { 2 };
+	constexpr signed char WN { 3 };
+	constexpr signed char WS { 4 };
+	constexpr signed char WQ { 5 };
+	constexpr signed char WK { 6 };
+	constexpr signed char BP { -1 };
+	constexpr signed char BR { -2 };
+	constexpr signed char BN { -3 };
+	constexpr signed char BS { -4 };
+	constexpr signed char BQ { -5 };
+	constexpr signed char BK { -6 };
+@end(globals)
+```
+
+```
+@add(globals)
 	signed char board[120] {
 		@put(initial board)
 	};
@@ -56,22 +75,22 @@
 * board consists of 12 rows (ranks) each row having 10 columns (files)
 * the boarder simplifies checking of legal moves
 * especially for legal knight moves
-* the boarder is initialized with 99
+* the boarder is initialized with 100 
 
 ```
 @def(initial board)
-	99,99,99,99,99,99,99,99,99,99,
-	99,99,99,99,99,99,99,99,99,99,
-	99, 2, 4, 3, 5, 6, 3, 4, 2,99,
-	99, 1, 1, 1, 1, 1, 1, 1, 1,99,
-	99, 0, 0, 0, 0, 0, 0, 0, 0,99,
-	99, 0, 0, 0, 0, 0, 0, 0, 0,99,
-	99, 0, 0, 0, 0, 0, 0, 0, 0,99,
-	99, 0, 0, 0, 0, 0, 0, 0, 0,99,
-	99,-1,-1,-1,-1,-1,-1,-1,-1,99,
-	99,-2,-4,-3,-5,-6,-3,-4,-2,99,
-	99,99,99,99,99,99,99,99,99,99,
-	99,99,99,99,99,99,99,99,99,99
+	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
+	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
+	X, WR, WS, WN, WQ, WK, WN, WS, WR, X,
+	X, WP, WP, WP, WP, WP, WP, WP, WP, X,
+	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
+	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
+	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
+	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
+	X, BP, BP, BP, BP, BP, BP, BP, BP, X,
+	X, BR, BS, BN, BQ, BK, BN, BS, BR, X,
+	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
+	X,  X,  X,  X,  X,  X,  X,  X,  X, X
 @end(initial board)
 ```
 * empty fields are `0`
@@ -366,12 +385,30 @@
 
 ```
 @add(globals)
-	bool is_valid(int p, int mul) {
-		auto x { board[p] };
-		if (x == 99) { return false; }
+	#include <vector>
+	void moves(int from, std::vector<int> &tos);
+	bool is_valid(int f, int t, int mul) {
+		auto x { board[t] };
+		if (x == X) { return false; }
 		if (x * mul > 0) {
 			return false;
 		}
+		static bool shortcut { false };
+		if (shortcut) { return true; }
+		shortcut = true;
+		move(f, t);
+		for (int i = 0; i < 120; ++i) {
+			if (board[i] * mul < 0) {
+				std::vector<int> mvs;
+				moves(i, mvs);
+				for (int m : mvs) {
+					if (board[m] == WK * mul) { return false; }
+				}
+			}
+		}
+		move(t, f);
+		set(t, x);
+		shortcut = false;
 		return true;
 	}
 @end(globals)
@@ -379,11 +416,10 @@
 
 ```
 @add(globals)
-	#include <vector>
 	void add_if_valid(
 		std::vector<int> &tos, int f, int t, int mul
 	) {
-		if (is_valid(t, mul)) {
+		if (is_valid(f, t, mul)) {
 			tos.push_back(t);
 		}
 	}
@@ -436,9 +472,9 @@
 ```
 @def(moves)
 	auto p { board[from] };
-	if (p == 0 || p == 99) { return; }
+	if (p == EE || p == X) { return; }
 	int mul { p > 0 ? 1 : -1 };
-	if (p == 4 || p == -4) {
+	if (p == WS || p == BS) {
 		add_if_valid(tos, from, from - 21, mul);
 		add_if_valid(tos, from, from - 19, mul);
 		add_if_valid(tos, from, from - 12, mul);
@@ -448,7 +484,7 @@
 		add_if_valid(tos, from, from + 19, mul);
 		add_if_valid(tos, from, from + 21, mul);
 	}
-	if (p == 1) {
+	if (p == WP) {
 		if (board[from + 10] == 0) {
 			add_if_valid(tos, from, from - 10, mul);
 		}
@@ -463,7 +499,7 @@
 			add_if_valid(tos, from, from + 20, mul);
 		}
 	}
-	if (p == -1) {
+	if (p == BP) {
 		if (board[from - 10] == 0) {
 			add_if_valid(tos, from, from - 10, mul);
 		}
@@ -478,19 +514,19 @@
 			add_if_valid(tos, from, from - 20, mul);
 		}
 	}
-	if (p == 2 || p == -2) {
+	if (p == WR || p == BR) {
 		add_row(tos, from, mul, -10);
 		add_row(tos, from, mul, -1);
 		add_row(tos, from, mul, 1);
 		add_row(tos, from, mul, 10);
 	}
-	if (p == 3 || p == -3) {
+	if (p == WN || p == BN) {
 		add_row(tos, from, mul, -11);
 		add_row(tos, from, mul, -9);
 		add_row(tos, from, mul, 9);
 		add_row(tos, from, mul, 11);
 	}
-	if (p == 5 || p == -5) {
+	if (p == WQ || p == BQ) {
 		add_row(tos, from, mul, -11);
 		add_row(tos, from, mul, -10);
 		add_row(tos, from, mul, -9);
@@ -500,7 +536,7 @@
 		add_row(tos, from, mul, 9);
 		add_row(tos, from, mul, 11);
 	}
-	if (p == 6 || p == -6) {
+	if (p == WK || p == BK) {
 		add_if_valid(tos, from, from - 11, mul);
 		add_if_valid(tos, from, from - 10, mul);
 		add_if_valid(tos, from, from - 9, mul);
