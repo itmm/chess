@@ -99,6 +99,7 @@
 	if (cmd == "p") {
 		std::cout << "\n";
 		@put(print board);
+		std::cout << "\n";
 		continue;
 	}
 @end(do cmd)
@@ -174,7 +175,7 @@
 @add(print board)
 	std::cout << "  Material: " <<
 		abs_material << " (" <<
-		material << ")\n\n";
+		material << ")\n";
 @end(print board)
 ```
 * print absolute and relative value
@@ -283,18 +284,275 @@
 * and adjust material values
 
 ```
+@add(globals)
+	@put(needed by move);
+	inline void move(
+		int from, int to
+	) {
+		if (from && to) {
+			set(to, board[from]);
+			set(from, 0);
+			@put(switch color);
+		}
+	}
+@end(globals)
+```
+* if the positions are valid the material of the to field is subtracted
+* then the piece is moved
+
+```
 @def(manual move)
 	int from { pos_to_idx(cs) };
 	int to { pos_to_idx(cs + 2) };
-	if (from && to) {
-		set(to, board[from]);
-		set(from, 0);
-	}
+	move(from, to);
 @end(manual move)
 ```
 * calculate the indices of the from and to fields
-* if the positions are valid the material of the to field is subtracted
-* then the piece is moved
+* and perform move
+
+## Switch Move Colors
+
+```
+@def(needed by move)
+	struct State {
+		bool whs_turn { true };
+		@put(state init);
+	} state;
+@end(needed by move)
+```
+* keep the current state of the chess match
+
+```
+@def(switch color)
+	state.whs_turn = ! state.whs_turn;
+@end(switch color)
+```
+
+```
+@add(print board)
+	std::cout << "  " <<
+		(state.whs_turn ? "Weiß" :
+			"Schwarz")  << " am Zug\n";
+@end(print board)
+```
+
+## Calculate a move
+
+```
+@def(do cmd)
+	if (cmd == "m") {
+		int from { 0 }, to { 0 };
+		@put(calc move);
+		if (from && to) {
+			move(from, to);
+			std::cout << (char) (from % 10 + 'a' - 1) << (char) (from / 10 + '1' - 2);
+			std::cout << (char) (to % 10 + 'a' - 1) << (char) (to / 10 + '1' - 2);
+			std::cout << "\n";
+		} else {
+			std::cout << "no move\n";
+		}
+		continue;
+	}
+@end(do cmd)
+```
+
+```
+@add(globals)
+	constexpr float ILLG { 2000.0f };
+	constexpr float MATT { 1000.0f };
+	constexpr float PATT {  500.0f };
+@end(globals)
+```
+
+```
+@add(globals)
+	bool is_valid(int p, int mul) {
+		auto x { board[p] };
+		if (x == 99) { return false; }
+		if (x * mul > 0) {
+			return false;
+		}
+		return true;
+	}
+@end(globals)
+```
+
+```
+@add(globals)
+	#include <vector>
+	void add_if_valid(
+		std::vector<int> &tos, int f, int t, int mul
+	) {
+		if (is_valid(t, mul)) {
+			tos.push_back(t);
+		}
+	}
+@end(globals)
+```
+
+```
+@add(globals)
+	void add_row(
+		std::vector<int> &tos, int p, int mul, int d
+	) {
+		for (int x { d };; x += d) {
+			add_if_valid(tos, p, p + x, mul);
+			if (board[p + x] != 0) { break; }
+		}
+	}
+@end(globals)
+```
+
+```
+@add(globals)
+	bool eval_move(int from, int to, bool wh_moves, float &best_wh, float &best_bl) {
+		signed char old { board[to] };
+		move(from, to);
+		bool better { false };
+		if (wh_moves && material > best_wh) {
+			best_wh = material;
+			better = true;
+		}
+		if (! wh_moves && material < best_bl) {
+			best_bl = material;
+			better = true;
+		}
+		move(to, from);
+		board[to] = old;
+		set(to, old);
+		return better;
+	}
+@end(globals)
+```
+
+```
+@add(globals)
+	void moves(int from, std::vector<int> &tos) {
+		@put(moves);
+	}
+@end(globals)
+```
+
+```
+@def(moves)
+	auto p { board[from] };
+	if (p == 0 || p == 99) { return; }
+	int mul { p > 0 ? 1 : -1 };
+	if (p == 4 || p == -4) {
+		add_if_valid(tos, from, from - 21, mul);
+		add_if_valid(tos, from, from - 19, mul);
+		add_if_valid(tos, from, from - 12, mul);
+		add_if_valid(tos, from, from - 8, mul);
+		add_if_valid(tos, from, from + 8, mul);
+		add_if_valid(tos, from, from + 12, mul);
+		add_if_valid(tos, from, from + 19, mul);
+		add_if_valid(tos, from, from + 21, mul);
+	}
+	if (p == 1) {
+		if (board[from + 10] == 0) {
+			add_if_valid(tos, from, from - 10, mul);
+		}
+		if (board[from + 9] * mul < 0) {
+			add_if_valid(tos, from, from + 9, mul);
+		}
+		if (board[from + 11] * mul < 0) {
+			add_if_valid(tos, from, from + 11, mul);
+		}
+		int r { from / 10 - 2 };
+		if (r == 1 && board[from + 10] == 0 && board[from + 20] == 0) {
+			add_if_valid(tos, from, from + 20, mul);
+		}
+	}
+	if (p == -1) {
+		if (board[from - 10] == 0) {
+			add_if_valid(tos, from, from - 10, mul);
+		}
+		if (board[from - 9] * mul < 0) {
+			add_if_valid(tos, from, from - 9, mul);
+		}
+		if (board[from - 11] * mul < 0) {
+			add_if_valid(tos, from, from - 11, mul);
+		}
+		int r { from / 10 - 2 };
+		if (r == 6 && board[from - 10] == 0 && board[from - 20] == 0) {
+			add_if_valid(tos, from, from - 20, mul);
+		}
+	}
+	if (p == 2 || p == -2) {
+		add_row(tos, from, mul, -10);
+		add_row(tos, from, mul, -1);
+		add_row(tos, from, mul, 1);
+		add_row(tos, from, mul, 10);
+	}
+	if (p == 3 || p == -3) {
+		add_row(tos, from, mul, -11);
+		add_row(tos, from, mul, -9);
+		add_row(tos, from, mul, 9);
+		add_row(tos, from, mul, 11);
+	}
+	if (p == 5 || p == -5) {
+		add_row(tos, from, mul, -11);
+		add_row(tos, from, mul, -10);
+		add_row(tos, from, mul, -9);
+		add_row(tos, from, mul, -1);
+		add_row(tos, from, mul, 1);
+		add_row(tos, from, mul, 10);
+		add_row(tos, from, mul, 9);
+		add_row(tos, from, mul, 11);
+	}
+	if (p == 6 || p == -6) {
+		add_if_valid(tos, from, from - 11, mul);
+		add_if_valid(tos, from, from - 10, mul);
+		add_if_valid(tos, from, from - 9, mul);
+		add_if_valid(tos, from, from - 1, mul);
+		add_if_valid(tos, from, from + 1, mul);
+		add_if_valid(tos, from, from + 9, mul);
+		add_if_valid(tos, from, from + 10, mul);
+		add_if_valid(tos, from, from + 11, mul);
+	}
+@end(moves)
+```
+
+```
+@add(globals)
+	int best_move(
+		int &from, int &to, bool move_for_wh,
+		float &best_wh, float &best_bl
+	) {
+		@put(best move);
+		return move_for_wh ? best_wh : best_bl;
+	}
+@end(globals)
+```
+
+```
+@def(calc move)
+	float best_w { -MATT };
+	float best_b { MATT };
+	best_move(
+		from, to, state.whs_turn,
+		best_w, best_b
+	);
+@end(calc move)
+```
+
+```
+@def(best move)
+	int mul { move_for_wh ? 1 : -1 };
+	for (int i = 0; i < 120; ++i) {
+		if (board[i] * mul > 0) {
+			std::vector<int> mvs;
+			moves(i, mvs);
+			for (int m : mvs) {
+				if (eval_move(i, m, move_for_wh, best_wh, best_bl)) {
+					from = i;
+					to = m;
+				}
+			}
+		}
+	}
+@end(best move)
+```
 
 ## Clear Board
 * note essential
@@ -400,16 +658,13 @@
 * keep the current state of the chess match
 
 ```
-@add(setup)
-	struct State {
-		bool whs_turn { true };
-		bool wh_o_o { true };
-		bool wh_o_o_o { true };
-		bool bl_o_o { true };
-		bool bl_o_o_o { true };
-		int e_p_field { 0 };
-	} state;
-@end(setup)
+@def(state init)
+	bool wh_o_o { true };
+	bool wh_o_o_o { true };
+	bool bl_o_o { true };
+	bool bl_o_o_o { true };
+	int e_p_field { 0 };
+@end(state init)
 ```
 * keep the current state of the chess match
 
