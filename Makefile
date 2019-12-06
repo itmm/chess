@@ -1,6 +1,7 @@
 MDs = $(shell hx-srcs.sh)
 CPPs = $(shell hx-files.sh $(MDs))
 APPs = $(CPPs:.cpp=)
+CXXFLAGS += -Wall -std=c++17
 
 hx-run: $(MDs)
 	@echo "HX"

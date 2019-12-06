@@ -11,121 +11,577 @@
 <div>
 <h1>Chess</h1>
 </div>
+<ul><li>
+a small chess playing program
+</li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@Def(<span class="name">file: chess.cpp</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">array</span>&gt;<br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cmath</span>&gt;<br/>
-<br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">globals</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">main</span>() {<br/>
-<span class="in2"></span><span class="keyword">using</span> <span class="type">Board</span> = <span class="type">std</span>::<span class="var">array</span>&lt;<span class="type">signed</span> <span class="type">char</span>, <span class="num">120</span>&gt;;<br/>
-<span class="in2"></span><span class="type">Board</span> <span class="var">board</span> {<br/>
-<span class="in3"></span><span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,   <span class="num">2</span>,   <span class="num">4</span>,   <span class="num">3</span>,   <span class="num">5</span>,   <span class="num">6</span>,   <span class="num">3</span>,   <span class="num">4</span>,   <span class="num">2</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,   <span class="num">1</span>,   <span class="num">1</span>,   <span class="num">1</span>,   <span class="num">1</span>,   <span class="num">1</span>,   <span class="num">1</span>,   <span class="num">1</span>,   <span class="num">1</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>,   <span class="num">0</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,  -<span class="num">1</span>,  -<span class="num">1</span>,  -<span class="num">1</span>,  -<span class="num">1</span>,  -<span class="num">1</span>,  -<span class="num">1</span>,  -<span class="num">1</span>,  -<span class="num">1</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>,  -<span class="num">2</span>,  -<span class="num">4</span>,  -<span class="num">3</span>,  -<span class="num">5</span>,  -<span class="num">6</span>,  -<span class="num">3</span>,  -<span class="num">4</span>,  -<span class="num">2</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>,<br/>
-<span class="in3"></span><span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span>, <span class="num">100</span><br/>
-<span class="in2"></span>};<br/>
-<span class="in2"></span><span class="var">float</span> <span class="var">_pieces_mat</span>[] {<br/>
-<span class="in3"></span>-<span class="num">200</span>.<span class="num">0f</span>, -<span class="num">9</span>.<span class="num">0f</span>, -<span class="num">3</span>.<span class="num">25f</span>, -<span class="num">3</span>.<span class="num">5f</span>, -<span class="num">5</span>.<span class="num">0f</span>, -<span class="num">1</span>.<span class="num">0f</span>,<br/>
-<span class="in3"></span><span class="num">0</span>.<span class="num">0f</span>, <span class="num">1</span>.<span class="num">0f</span>, <span class="num">5</span>.<span class="num">0f</span>, <span class="num">3</span>.<span class="num">5f</span>, <span class="num">3</span>.<span class="num">25f</span>, <span class="num">9</span>.<span class="num">0f</span>, <span class="num">200</span>.<span class="num">0f</span><br/>
-<span class="in2"></span>};<br/>
-<span class="in2"></span><span class="var">float</span> *<span class="var">pieces_mat</span> { <span class="var">_pieces_mat</span> + <span class="num">6</span> };<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">_pieces_board</span>[] {<br/>
-<span class="in3"></span><span class="str">"♚"</span>, <span class="str">"♛"</span>, <span class="str">"♞"</span>, <span class="str">"♝"</span>, <span class="str">"♜"</span>, <span class="str">"♟"</span>, <span class="str">" "</span>,<br/>
-<span class="in3"></span><span class="str">"♙"</span>, <span class="str">"♖"</span>, <span class="str">"♗"</span>, <span class="str">"♘"</span>, <span class="str">"♕"</span>, <span class="str">"♔"</span><br/>
-<span class="in2"></span>};<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> *<span class="var">pieces_board</span> { <span class="var">_pieces_board</span> + <span class="num">6</span> };<br/>
-<br/>
-<span class="in2"></span><span class="type">struct</span> <span class="type">State</span> {<br/>
-<span class="in3"></span><span class="type">bool</span> <span class="var">wh_o_o</span> { <span class="num">true</span> };<br/>
-<span class="in3"></span><span class="type">bool</span> <span class="var">wh_o_o_o</span> { <span class="num">true</span> };<br/>
-<span class="in3"></span><span class="type">bool</span> <span class="var">bl_o_o</span> { <span class="num">true</span> };<br/>
-<span class="in3"></span><span class="type">bool</span> <span class="var">bl_o_o_o</span> { <span class="num">true</span> };<br/>
-<span class="in3"></span><span class="type">char</span> <span class="var">e_p_field</span> { <span class="num">0</span> };<br/>
-<span class="in2"></span>} <span class="var">state</span>;<br/>
-<span class="in2"></span><span class="var">float</span> <span class="var">material</span> { <span class="num">0</span>.<span class="num">0f</span> };<br/>
-<span class="in2"></span><span class="var">float</span> <span class="var">abs_material</span> { <span class="num">481</span>.<span class="num">0f</span> };<br/>
-<br/>
-<span class="in2"></span><span class="keyword">for</span> (;;) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"?&gt; "</span>;<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">cmd</span>;<br/>
-<span class="in3"></span><span class="keyword">if</span> (! (<span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">cmd</span>)) { <span class="keyword">break</span>; }<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"p"</span>) {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
-<span class="in4"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">7</span>; <span class="var">r</span> &gt;= <span class="num">0</span>; --<span class="var">r</span>) {<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; (<span class="var">r</span> + <span class="num">1</span>) &lt;&lt; <span class="str">" "</span>;<br/>
-<span class="in5"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">f</span> = <span class="num">0</span>; <span class="var">f</span> &lt;= <span class="num">7</span>; ++<span class="var">f</span>) {<br/>
-<span class="in6"></span><span class="type">signed</span> <span class="type">char</span> <span class="var">c</span> { <span class="var">board</span>[<span class="var">r</span> * <span class="num">10</span> + <span class="num">21</span> + <span class="var">f</span>] };<br/>
-<span class="in6"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">pieces_board</span>[<span class="var">c</span>];<br/>
-<span class="in5"></span>}<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  abcdefgh\n\n"</span>;<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  Material: "</span> &lt;&lt; <span class="var">abs_material</span> &lt;&lt; <span class="str">" ("</span> &lt;&lt; <span class="var">material</span> &lt;&lt; <span class="str">")\n\n"</span>;<br/>
-<span class="in4"></span><span class="keyword">continue</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"c"</span>) {<br/>
-<span class="in4"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">0</span>; <span class="var">r</span> &lt;= <span class="num">7</span>; ++<span class="var">r</span>) {<br/>
-<span class="in5"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">f</span> = <span class="num">0</span>; <span class="var">f</span> &lt;= <span class="num">7</span>; ++<span class="var">f</span>) {<br/>
-<span class="in6"></span><span class="var">board</span>[<span class="var">r</span> * <span class="num">10</span> + <span class="num">21</span> + <span class="var">f</span>] = <span class="num">0</span>;<br/>
-<span class="in5"></span>}<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="var">material</span> = <span class="var">abs_material</span> = <span class="num">0</span>.<span class="num">0f</span>;<br/>
-<span class="in4"></span><span class="keyword">continue</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"w"</span> || <span class="var">cmd</span> == <span class="str">"b"</span>) {<br/>
-<span class="in4"></span><span class="type">int</span> <span class="var">mul</span> = <span class="var">cmd</span> == <span class="str">"w"</span> ? <span class="num">1</span> : -<span class="num">1</span>;<br/>
-<span class="in4"></span><span class="keyword">for</span> (;;) {<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">piece</span>;<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">piece</span>;<br/>
-<span class="in5"></span><span class="keyword">if</span> (<span class="var">piece</span> == <span class="str">"."</span>) { <span class="keyword">break</span>; }<br/>
-<span class="in5"></span><span class="keyword">if</span> (<span class="var">piece</span>.<span class="fn">size</span>() == <span class="num">3</span> &amp;&amp; <span class="var">piece</span>[<span class="num">1</span>] &gt;= <span class="str">'a'</span> &amp;&amp; <span class="var">piece</span>[<span class="num">1</span>] &lt;= <span class="str">'h'</span> &amp;&amp; <span class="var">piece</span>[<span class="num">2</span>] &gt;= <span class="str">'1'</span> &amp;&amp; <span class="var">piece</span>[<span class="num">2</span>] &lt;= <span class="str">'h'</span>) {<br/>
-<span class="in6"></span><span class="type">int</span> <span class="var">p</span> = (<span class="var">piece</span>[<span class="num">1</span>] - <span class="str">'a'</span>) + <span class="num">10</span> * (<span class="var">piece</span>[<span class="num">2</span>] - <span class="str">'1'</span>) + <span class="num">21</span>;<br/>
-<span class="in6"></span><span class="var">material</span> -= <span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">p</span>]];<br/>
-<span class="in6"></span><span class="var">abs_material</span> -= <span class="fn">fabs</span>(<span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">p</span>]]);<br/>
-<span class="in6"></span><span class="type">bool</span> <span class="var">found</span> = <span class="num">true</span>;<br/>
-<span class="in6"></span><span class="keyword">switch</span> (<span class="var">piece</span>[<span class="num">0</span>]) {<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'.'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="num">0</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'B'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">1</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'T'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">2</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'L'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">3</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'S'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">4</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'D'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">5</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">case</span> <span class="str">'K'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">6</span>; <span class="keyword">break</span>;<br/>
-<span class="in7"></span><span class="keyword">default</span>:<br/>
-<span class="in8"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"unkonwn piece "</span> &lt;&lt; <span class="var">piece</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
-<span class="in6"></span>}<br/>
-<span class="in6"></span><span class="var">material</span> += <span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">p</span>]];<br/>
-<span class="in6"></span><span class="var">abs_material</span> += <span class="fn">fabs</span>(<span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">p</span>]]);<br/>
-<span class="in6"></span><span class="keyword">continue</span>;<br/>
-<span class="in5"></span>}<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"unknown piece "</span> &lt;&lt; <span class="var">piece</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="keyword">continue</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span>.<span class="fn">size</span>() == <span class="num">4</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">0</span>] &gt;= <span class="str">'a'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">0</span>] &lt;= <span class="str">'h'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">1</span>] &gt;= <span class="str">'1'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">1</span>] &lt;= <span class="str">'8'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">2</span>] &gt;= <span class="str">'a'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">2</span>] &lt;= <span class="str">'h'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">3</span>] &gt;= <span class="str">'1'</span> &amp;&amp; <span class="var">cmd</span>[<span class="num">3</span>] &lt;= <span class="str">'8'</span>) {<br/>
-<span class="in4"></span><span class="type">int</span> <span class="var">from</span> = (<span class="var">cmd</span>[<span class="num">0</span>] - <span class="str">'a'</span>) + <span class="num">10</span> * (<span class="var">cmd</span>[<span class="num">1</span>] - <span class="str">'1'</span>) + <span class="num">21</span>;<br/>
-<span class="in4"></span><span class="type">int</span> <span class="var">to</span> = (<span class="var">cmd</span>[<span class="num">2</span>] - <span class="str">'a'</span>) + <span class="num">10</span> * (<span class="var">cmd</span>[<span class="num">3</span>] - <span class="str">'1'</span>) + <span class="num">21</span>;<br/>
-<span class="in4"></span><span class="var">material</span> -= <span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">to</span>]];<br/>
-<span class="in4"></span><span class="var">abs_material</span> -= <span class="fn">fabs</span>(<span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">to</span>]]);<br/>
-<span class="in4"></span><span class="var">board</span>[<span class="var">to</span>] = <span class="var">board</span>[<span class="var">from</span>]; <span class="var">board</span>[<span class="var">from</span>] = <span class="num">0</span>;<br/>
-<span class="in4"></span><span class="keyword">continue</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"unknown command "</span> &lt;&lt; <span class="var">cmd</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
-<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">setup</span>)</span>;<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">main loop</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">file: chess.cpp</span>)</span><br/>
 </code></div>
+<ul><li>
+simple <code><span class="fn">main</span></code> function
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+needs <code><span class="type">std</span>::<span class="var">cin</span></code>, <code><span class="type">std</span>::<span class="var">cout</span></code>, <code><span class="type">std</span>::<span class="var">cerr</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">main loop</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (;;) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"?&gt; "</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">cmd</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (! (<span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">cmd</span>)) {<br/>
+<span class="in3"></span><span class="keyword">break</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">do cmd</span>)</span>;<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">unknown cmd</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main loop</span>)</span><br/>
+</code></div>
+<ul><li>
+simple read/process loop
+</li><li>
+terminate on end of file
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">unknown cmd</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"unknown command "</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="var">cmd</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="macro">@end(<span class="name">unknown cmd</span>)</span><br/>
+</code></div>
+<ul><li>
+message for unknown inputs
+</li></ul>
+</div>
+</div>
+<h2>Print board</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Print board</h2>
+</div>
+<ul><li>
+first task is to print the board
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">signed</span> <span class="type">char</span> <span class="var">board</span>[<span class="num">120</span>] {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">initial board</span>)</span><br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+board consists of 12 rows (ranks) each row having 10 columns (files)
+</li><li>
+the boarder simplifies checking of legal moves
+</li><li>
+especially for legal knight moves
+</li><li>
+the boarder is initialized with 99
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">initial board</span>)</span><br/>
+<span class="in1"></span><span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>, <span class="num">2</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">2</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>,-<span class="num">1</span>,-<span class="num">1</span>,-<span class="num">1</span>,-<span class="num">1</span>,-<span class="num">1</span>,-<span class="num">1</span>,-<span class="num">1</span>,-<span class="num">1</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>,-<span class="num">2</span>,-<span class="num">4</span>,-<span class="num">3</span>,-<span class="num">5</span>,-<span class="num">6</span>,-<span class="num">3</span>,-<span class="num">4</span>,-<span class="num">2</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<br/>
+<span class="in1"></span><span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span>,<span class="num">99</span><br/>
+<span class="macro">@end(<span class="name">initial board</span>)</span><br/>
+</code></div>
+<ul><li>
+empty fields are <code><span class="num">0</span></code>
+</li><li>
+white figures have positive values
+</li><li>
+black figures have negative values
+</li><li>
+the board is rotated: the top left corner is A1
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">setup</span>)</span><br/>
+<span class="in1"></span><span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">_pieces_board</span>[] {<br/>
+<span class="in2"></span><span class="str">"♚"</span>, <span class="str">"♛"</span>, <span class="str">"♞"</span>, <span class="str">"♝"</span>, <span class="str">"♜"</span>,<br/>
+<span class="in2"></span><span class="str">"♟"</span>, <span class="str">"."</span>, <span class="str">"♙"</span>, <span class="str">"♖"</span>,<br/>
+<span class="in2"></span><span class="str">"♗"</span>, <span class="str">"♘"</span>, <span class="str">"♕"</span>, <span class="str">"♔"</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> *<span class="var">pieces_board</span> {<br/>
+<span class="in2"></span><span class="var">_pieces_board</span> + <span class="num">6</span><br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@end(<span class="name">setup</span>)</span><br/>
+</code></div>
+<ul><li>
+UTF-8 character codes are available for all chess figures
+</li><li>
+a pointer to the empty field is used to allow for negative indices
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">do cmd</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"p"</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">print board</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">do cmd</span>)</span><br/>
+</code></div>
+<ul><li>
+the <code><span class="var">p</span></code> command prints the board
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">print board</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">7</span>; <span class="var">r</span> &gt;= <span class="num">0</span>; --<span class="var">r</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; (<span class="var">r</span> + <span class="num">1</span>) &lt;&lt; <span class="str">" "</span>;<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">print board rank</span>)</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  abcdefgh\n\n"</span>;<br/>
+<span class="macro">@end(<span class="name">print board</span>)</span><br/>
+</code></div>
+<ul><li>
+go through each rank in reverse order
+</li><li>
+print the rank
+</li><li>
+and close with the file indices
+</li><li>
+each rank starts with the rank index
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">int</span> <span class="fn">f_r_to_idx</span>(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">f</span>, <span class="type">int</span> <span class="var">r</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">r</span> * <span class="num">10</span> + <span class="var">f</span> + <span class="num">21</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+get index for file <code><span class="var">f</span></code> and rank <code><span class="var">r</span></code>
+</li><li>
+each rank consists of 10 bytes
+</li><li>
+and the first two ranks must be skipped
+</li><li>
+so must the first file
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">signed</span> <span class="type">char</span> <span class="fn">get</span>(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">f</span>, <span class="type">int</span> <span class="var">r</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">board</span>[<span class="fn">f_r_to_idx</span>(<span class="var">f</span>, <span class="var">r</span>)];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+get piece value for a specific file <code><span class="var">f</span></code> and rank <code><span class="var">r</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">print board rank</span>)</span>;<br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">f</span> = <span class="num">0</span>; <span class="var">f</span> &lt;= <span class="num">7</span>; ++<span class="var">f</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">pieces_board</span>[<br/>
+<span class="in3"></span><span class="fn">get</span>(<span class="var">f</span>, <span class="var">r</span>)<br/>
+<span class="in2"></span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">print board rank</span>)</span>;<br/>
+</code></div>
+<ul><li>
+print figure
+</li></ul>
+</div>
+</div>
+<h2>Handle Material</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Handle Material</h2>
+</div>
+<ul><li>
+two counts for material are kept
+</li><li>
+the absolute value indicates how many pieces are still in play
+</li><li>
+the normal value indicates how big the advantage of white is
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">material</span> { <span class="num">0</span>.<span class="num">0f</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">abs_material</span> { <span class="num">481</span>.<span class="num">0f</span> };<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+initialize values for full board
+</li><li>
+no advantage for any color
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">print board</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  Material: "</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="var">abs_material</span> &lt;&lt; <span class="str">" ("</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="var">material</span> &lt;&lt; <span class="str">")\n\n"</span>;<br/>
+<span class="macro">@end(<span class="name">print board</span>)</span><br/>
+</code></div>
+<ul><li>
+print absolute and relative value
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">const</span> <span class="var">float</span> <span class="var">_pieces_mat</span>[] {<br/>
+<span class="in2"></span>-<span class="num">200</span>.<span class="num">0f</span>, -<span class="num">9</span>.<span class="num">0f</span>, -<span class="num">3</span>.<span class="num">25f</span>, -<span class="num">3</span>.<span class="num">5f</span>,<br/>
+<span class="in2"></span>-<span class="num">5</span>.<span class="num">0f</span>, -<span class="num">1</span>.<span class="num">0f</span>, <span class="num">0</span>.<span class="num">0f</span>, <span class="num">1</span>.<span class="num">0f</span>, <span class="num">5</span>.<span class="num">0f</span>,<br/>
+<span class="in2"></span><span class="num">3</span>.<span class="num">5f</span>, <span class="num">3</span>.<span class="num">25f</span>, <span class="num">9</span>.<span class="num">0f</span>, <span class="num">200</span>.<span class="num">0f</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">const</span> <span class="var">float</span> *<span class="var">pieces_mat</span> {<br/>
+<span class="in2"></span><span class="var">_pieces_mat</span> + <span class="num">6</span><br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+each piece has a different value
+</li><li>
+offset is used again to allow negative indices
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cmath</span>&gt;<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+needs `@f(fabs)
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">add</span>(<span class="type">signed</span> <span class="type">char</span> <span class="var">f</span>) {<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m</span> { <span class="var">pieces_mat</span>[<span class="var">f</span>] };<br/>
+<span class="in2"></span><span class="var">material</span> += <span class="var">m</span>;<br/>
+<span class="in2"></span><span class="var">abs_material</span> += <span class="fn">fabs</span>(<span class="var">m</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+add piece <code><span class="var">f</span></code> to material count
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">sub</span>(<span class="type">signed</span> <span class="type">char</span> <span class="var">f</span>) {<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m</span> { <span class="var">pieces_mat</span>[<span class="var">f</span>] };<br/>
+<span class="in2"></span><span class="var">material</span> -= <span class="var">m</span>;<br/>
+<span class="in2"></span><span class="var">abs_material</span> -= <span class="fn">fabs</span>(<span class="var">m</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+remove piece <code><span class="var">f</span></code> from material count
+</li></ul>
+</div>
+</div>
+<h2>Move Manually</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Move Manually</h2>
+</div>
+<ul><li>
+perform direct moves
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">is_pos</span>(<span class="type">const</span> <span class="type">char</span> *<span class="var">p</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">p</span>[<span class="num">0</span>] &lt; <span class="str">'a'</span> || <span class="var">p</span>[<span class="num">0</span>] &gt; <span class="str">'h'</span>) {<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">p</span>[<span class="num">1</span>] &lt; <span class="str">'1'</span> || <span class="var">p</span>[<span class="num">1</span>] &gt; <span class="str">'8'</span>) {<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+a position consists of two characters
+</li><li>
+the first is the rank and the second the file
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">do cmd</span>)</span> {<br/>
+<span class="in1"></span><span class="type">const</span> <span class="type">char</span> *<span class="var">cs</span> { <span class="var">cmd</span>.<span class="fn">c_str</span>() };<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">cmd</span>.<span class="fn">size</span>() == <span class="num">4</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="fn">is_pos</span>(<span class="var">cs</span>) &amp;&amp; <span class="fn">is_pos</span>(<span class="var">cs</span> + <span class="num">2</span>)<br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">manual move</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+} <span class="macro">@end(<span class="name">do cmd</span>)</span><br/>
+</code></div>
+<ul><li>
+a move consists of two positions: the from field and the to field
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="fn">pos_to_idx</span>(<span class="type">const</span> <span class="type">char</span> *<span class="var">p</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (! <span class="fn">is_pos</span>(<span class="var">p</span>)) { <span class="keyword">return</span> <span class="num">0</span>; }<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">f</span> { <span class="var">p</span>[<span class="num">0</span>] - <span class="str">'a'</span> };<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">r</span> { <span class="var">p</span>[<span class="num">1</span>] - <span class="str">'1'</span> };<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">f_r_to_idx</span>(<span class="var">f</span>, <span class="var">r</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+convert a position string to an index
+</li><li>
+by converting the position to file and rank
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">manual move</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">from</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span>) };<br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">to</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span> + <span class="num">2</span>) };<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">from</span> &amp;&amp; <span class="var">to</span>) {<br/>
+<span class="in2"></span><span class="fn">sub</span>(<span class="var">board</span>[<span class="var">to</span>]);<br/>
+<span class="in2"></span><span class="var">board</span>[<span class="var">to</span>] = <span class="var">board</span>[<span class="var">from</span>];<br/>
+<span class="in2"></span><span class="var">board</span>[<span class="var">from</span>] = <span class="num">0</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">manual move</span>)</span><br/>
+</code></div>
+<ul><li>
+calculate the indices of the from and to fields
+</li><li>
+if the positions are valid the material of the to field is subtracted
+</li><li>
+then the piece is moved
+</li></ul>
+</div>
+</div>
+<h2>Clear Board</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Clear Board</h2>
+</div>
+<ul><li>
+note essential
+</li><li>
+clears the board
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">do cmd</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"c"</span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">do clear</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">do cmd</span>)</span><br/>
+</code></div>
+<ul><li>
+the <code><span class="var">c</span></code> command clears the board
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">do clear</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">0</span>; <span class="var">r</span> &lt;= <span class="num">7</span>; ++<span class="var">r</span>) {<br/>
+<span class="in2"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">f</span> = <span class="num">0</span>; <span class="var">f</span> &lt;= <span class="num">7</span>; ++<span class="var">f</span>) {<br/>
+<span class="in3"></span><span class="var">board</span>[<span class="fn">f_r_to_idx</span>(<span class="var">f</span>, <span class="var">r</span>)] = <span class="num">0</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="var">material</span> = <span class="var">abs_material</span> = <span class="num">0</span>.<span class="num">0f</span>;<br/>
+<span class="macro">@end(<span class="name">do clear</span>)</span><br/>
+</code></div>
+<ul><li>
+set each field to the empty field
+</li><li>
+and clear material counts
+</li></ul>
+</div>
+</div>
+<h2>Add Pieces</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Add Pieces</h2>
+</div>
+<ul><li>
+not essential
+</li><li>
+add black or white pieces
+</li><li>
+can also clear fields
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">do cmd</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"w"</span> || <span class="var">cmd</span> == <span class="str">"b"</span>) {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">mul</span> = <span class="var">cmd</span> == <span class="str">"w"</span> ? <span class="num">1</span> : -<span class="num">1</span>;<br/>
+<span class="in2"></span><span class="keyword">for</span> (;;) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">piece</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cin</span> &gt;&gt; <span class="var">piece</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">piece</span> == <span class="str">"."</span>) { <span class="keyword">break</span>; }<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">add piece</span>)</span>;<br/>
+<span class="in3"></span><span class="macro">@mul(<span class="name">unknown piece</span>)</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">do cmd</span>)</span><br/>
+</code></div>
+<ul><li>
+use the <code><span class="var">w</span></code> for adding white pieces
+</li><li>
+and <code><span class="var">b</span></code> for adding black pieces
+</li><li>
+afterwards specify the pieces to add
+</li><li>
+terminate the sequence with <code>.</code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">unknown piece</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"unknown piece "</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="var">piece</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="macro">@end(<span class="name">unknown piece</span>)</span><br/>
+</code></div>
+<ul><li>
+signal wrong piece syntax
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">add piece</span>)</span> {<br/>
+<span class="in1"></span><span class="type">const</span> <span class="type">char</span> *<span class="var">cs</span> { <span class="var">piece</span>.<span class="fn">c_str</span>() };<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">piece</span>.<span class="fn">size</span>() == <span class="num">3</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="fn">is_pos</span>(<span class="var">cs</span> + <span class="num">1</span>)<br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">do add piece</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+} <span class="macro">@end(<span class="name">add piece</span>)</span><br/>
+</code></div>
+<ul><li>
+each piece starts with the kind of the piece
+</li><li>
+and a position
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">do add piece</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">p</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span> + <span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="fn">sub</span>(<span class="var">board</span>[<span class="var">p</span>]);<br/>
+<span class="in1"></span><span class="keyword">switch</span> (<span class="var">cs</span>[<span class="num">0</span>]) {<br/>
+<span class="in2"></span><span class="keyword">case</span> <span class="str">'.'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="num">0</span>; <span class="keyword">break</span>;<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">put other pieces</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">default</span>:<br/>
+<span class="in3"></span><span class="macro">@mul(<span class="name">unknown piece</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="fn">add</span>(<span class="var">board</span>[<span class="var">p</span>]);<br/>
+<span class="macro">@end(<span class="name">do add piece</span>)</span><br/>
+</code></div>
+<ul><li>
+a piece can be removed with <code>.</code> and the position
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">put other pieces</span>)</span><br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'B'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">1</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'T'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">2</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'L'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">3</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'S'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">4</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'D'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">5</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'K'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">6</span>; <span class="keyword">break</span>;<br/>
+<span class="macro">@end(<span class="name">put other pieces</span>)</span><br/>
+</code></div>
+<ul><li>
+use german uppercase letters to set the figure
+</li></ul>
+</div>
+</div>
+<h2>Add State</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Add State</h2>
+</div>
+<ul><li>
+keep the current state of the chess match
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">setup</span>)</span><br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">State</span> {<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">whs_turn</span> { <span class="num">true</span> };<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">wh_o_o</span> { <span class="num">true</span> };<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">wh_o_o_o</span> { <span class="num">true</span> };<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">bl_o_o</span> { <span class="num">true</span> };<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">bl_o_o_o</span> { <span class="num">true</span> };<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">e_p_field</span> { <span class="num">0</span> };<br/>
+<span class="in1"></span>} <span class="var">state</span>;<br/>
+<span class="macro">@end(<span class="name">setup</span>)</span><br/>
+</code></div>
+<ul><li>
+keep the current state of the chess match
+</li></ul>
 </div>
 </body>
 </html>
