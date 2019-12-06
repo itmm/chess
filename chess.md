@@ -269,13 +269,26 @@
 * by converting the position to file and rank
 
 ```
+@add(globals)
+	inline void set(
+		int pos, signed char fig
+	) {
+		sub(board[pos]);
+		board[pos] = fig;
+		add(board[pos]);
+	}
+@end(globals)
+```
+* set figure on field
+* and adjust material values
+
+```
 @def(manual move)
 	int from { pos_to_idx(cs) };
 	int to { pos_to_idx(cs + 2) };
 	if (from && to) {
-		sub(board[to]);
-		board[to] = board[from];
-		board[from] = 0;
+		set(to, board[from]);
+		set(from, 0);
 	}
 @end(manual move)
 ```
@@ -360,9 +373,8 @@
 ```
 @def(do add piece)
 	int p { pos_to_idx(cs + 1) };
-	sub(board[p]);
 	switch (cs[0]) {
-		case '.': board[p] = 0; break;
+		case '.': set(p, 0); break;
 		@put(put other pieces);
 		default:
 			@mul(unknown piece);
@@ -374,12 +386,12 @@
 
 ```
 @def(put other pieces)
-	case 'B': board[p] = mul * 1; break;
-	case 'T': board[p] = mul * 2; break;
-	case 'L': board[p] = mul * 3; break;
-	case 'S': board[p] = mul * 4; break;
-	case 'D': board[p] = mul * 5; break;
-	case 'K': board[p] = mul * 6; break;
+	case 'B': set(p, mul * 1); break;
+	case 'T': set(p, mul * 2); break;
+	case 'L': set(p, mul * 3); break;
+	case 'S': set(p, mul * 4); break;
+	case 'D': set(p, mul * 5); break;
+	case 'K': set(p, mul * 6); break;
 @end(put other pieces)
 ```
 * use german uppercase letters to set the figure

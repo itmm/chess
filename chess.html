@@ -391,13 +391,30 @@ by converting the position to file and rank
 </div>
 <div><div>
 <code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">void</span> <span class="fn">set</span>(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">pos</span>, <span class="type">signed</span> <span class="type">char</span> <span class="var">fig</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="fn">sub</span>(<span class="var">board</span>[<span class="var">pos</span>]);<br/>
+<span class="in2"></span><span class="var">board</span>[<span class="var">pos</span>] = <span class="var">fig</span>;<br/>
+<span class="in2"></span><span class="fn">add</span>(<span class="var">board</span>[<span class="var">pos</span>]);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+set figure on field
+</li><li>
+and adjust material values
+</li></ul>
+</div>
+<div><div>
+<code>
 <span class="macro">@def(<span class="name">manual move</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">from</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span>) };<br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">to</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span> + <span class="num">2</span>) };<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">from</span> &amp;&amp; <span class="var">to</span>) {<br/>
-<span class="in2"></span><span class="fn">sub</span>(<span class="var">board</span>[<span class="var">to</span>]);<br/>
-<span class="in2"></span><span class="var">board</span>[<span class="var">to</span>] = <span class="var">board</span>[<span class="var">from</span>];<br/>
-<span class="in2"></span><span class="var">board</span>[<span class="var">from</span>] = <span class="num">0</span>;<br/>
+<span class="in2"></span><span class="fn">set</span>(<span class="var">to</span>, <span class="var">board</span>[<span class="var">from</span>]);<br/>
+<span class="in2"></span><span class="fn">set</span>(<span class="var">from</span>, <span class="num">0</span>);<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">manual move</span>)</span><br/>
 </code></div>
@@ -526,9 +543,8 @@ and a position
 <code>
 <span class="macro">@def(<span class="name">do add piece</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">p</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span> + <span class="num">1</span>) };<br/>
-<span class="in1"></span><span class="fn">sub</span>(<span class="var">board</span>[<span class="var">p</span>]);<br/>
 <span class="in1"></span><span class="keyword">switch</span> (<span class="var">cs</span>[<span class="num">0</span>]) {<br/>
-<span class="in2"></span><span class="keyword">case</span> <span class="str">'.'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="num">0</span>; <span class="keyword">break</span>;<br/>
+<span class="in2"></span><span class="keyword">case</span> <span class="str">'.'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="num">0</span>); <span class="keyword">break</span>;<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">put other pieces</span>)</span>;<br/>
 <span class="in2"></span><span class="keyword">default</span>:<br/>
 <span class="in3"></span><span class="macro">@mul(<span class="name">unknown piece</span>)</span>;<br/>
@@ -543,12 +559,12 @@ a piece can be removed with <code>.</code> and the position
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">put other pieces</span>)</span><br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'B'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">1</span>; <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'T'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">2</span>; <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'L'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">3</span>; <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'S'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">4</span>; <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'D'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">5</span>; <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'K'</span>: <span class="var">board</span>[<span class="var">p</span>] = <span class="var">mul</span> * <span class="num">6</span>; <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'B'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">mul</span> * <span class="num">1</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'T'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">mul</span> * <span class="num">2</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'L'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">mul</span> * <span class="num">3</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'S'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">mul</span> * <span class="num">4</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'D'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">mul</span> * <span class="num">5</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'K'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">mul</span> * <span class="num">6</span>); <span class="keyword">break</span>;<br/>
 <span class="macro">@end(<span class="name">put other pieces</span>)</span><br/>
 </code></div>
 <ul><li>

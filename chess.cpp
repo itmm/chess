@@ -102,6 +102,16 @@
 		return f_r_to_idx(f, r);
 	}
 
+#line 272 "chess.md"
+
+	inline void set(
+		int pos, signed char fig
+	) {
+		sub(board[pos]);
+		board[pos] = fig;
+		add(board[pos]);
+	}
+
 #line 6 "chess.md"
 
 	int main() {
@@ -117,7 +127,7 @@
 		_pieces_board + 6
 	};
 
-#line 391 "chess.md"
+#line 403 "chess.md"
 
 	struct State {
 		bool whs_turn { true };
@@ -182,14 +192,13 @@
 		is_pos(cs) && is_pos(cs + 2)
 	) {
 		
-#line 272 "chess.md"
+#line 286 "chess.md"
 
 	int from { pos_to_idx(cs) };
 	int to { pos_to_idx(cs + 2) };
 	if (from && to) {
-		sub(board[to]);
-		board[to] = board[from];
-		board[from] = 0;
+		set(to, board[from]);
+		set(from, 0);
 	}
 
 #line 251 "chess.md"
@@ -197,11 +206,11 @@
 		continue;
 	}
 } 
-#line 291 "chess.md"
+#line 304 "chess.md"
 
 	if (cmd == "c") {
 		
-#line 301 "chess.md"
+#line 314 "chess.md"
 
 	for (int r = 0; r <= 7; ++r) {
 		for (int f = 0; f <= 7; ++f) {
@@ -210,12 +219,12 @@
 	}
 	material = abs_material = 0.0f;
 
-#line 293 "chess.md"
+#line 306 "chess.md"
 ;
 		continue;
 	}
 
-#line 319 "chess.md"
+#line 332 "chess.md"
 
 	if (cmd == "w" || cmd == "b") {
 		int mul = cmd == "w" ? 1 : -1;
@@ -224,57 +233,56 @@
 			std::cin >> piece;
 			if (piece == ".") { break; }
 			
-#line 347 "chess.md"
+#line 360 "chess.md"
  {
 	const char *cs { piece.c_str() };
 	if (piece.size() == 3 &&
 		is_pos(cs + 1)
 	) {
 		
-#line 361 "chess.md"
+#line 374 "chess.md"
 
 	int p { pos_to_idx(cs + 1) };
-	sub(board[p]);
 	switch (cs[0]) {
-		case '.': board[p] = 0; break;
+		case '.': set(p, 0); break;
 		
-#line 376 "chess.md"
+#line 388 "chess.md"
 
-	case 'B': board[p] = mul * 1; break;
-	case 'T': board[p] = mul * 2; break;
-	case 'L': board[p] = mul * 3; break;
-	case 'S': board[p] = mul * 4; break;
-	case 'D': board[p] = mul * 5; break;
-	case 'K': board[p] = mul * 6; break;
+	case 'B': set(p, mul * 1); break;
+	case 'T': set(p, mul * 2); break;
+	case 'L': set(p, mul * 3); break;
+	case 'S': set(p, mul * 4); break;
+	case 'D': set(p, mul * 5); break;
+	case 'K': set(p, mul * 6); break;
 
-#line 366 "chess.md"
+#line 378 "chess.md"
 ;
 		default:
 			
-#line 339 "chess.md"
+#line 352 "chess.md"
 
 	std::cerr << "unknown piece " <<
 		piece << "\n";
 
-#line 368 "chess.md"
+#line 380 "chess.md"
 ;
 	}
 	add(board[p]);
 
-#line 352 "chess.md"
+#line 365 "chess.md"
 ;
 		continue;
 	}
 } 
-#line 326 "chess.md"
+#line 339 "chess.md"
 ;
 			
-#line 339 "chess.md"
+#line 352 "chess.md"
 
 	std::cerr << "unknown piece " <<
 		piece << "\n";
 
-#line 327 "chess.md"
+#line 340 "chess.md"
 ;
 		}
 		continue;
