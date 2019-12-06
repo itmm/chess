@@ -19,17 +19,6 @@
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cmath</span>&gt;<br/>
 <br/>
-<span class="in1"></span><span class="type">void</span> <span class="fn">draw_fig</span>(<span class="type">char</span> <span class="var">c</span>) {<br/>
-<span class="in2"></span><span class="keyword">switch</span> (<span class="var">c</span>) {<br/>
-<span class="in3"></span><span class="keyword">case</span> <span class="num">1</span>: <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"B"</span>; <span class="keyword">break</span>;<br/>
-<span class="in3"></span><span class="keyword">case</span> <span class="num">2</span>: <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"T"</span>; <span class="keyword">break</span>;<br/>
-<span class="in3"></span><span class="keyword">case</span> <span class="num">3</span>: <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"L"</span>; <span class="keyword">break</span>;<br/>
-<span class="in3"></span><span class="keyword">case</span> <span class="num">4</span>: <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"S"</span>; <span class="keyword">break</span>;<br/>
-<span class="in3"></span><span class="keyword">case</span> <span class="num">5</span>: <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"D"</span>; <span class="keyword">break</span>;<br/>
-<span class="in3"></span><span class="keyword">case</span> <span class="num">6</span>: <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"K"</span>; <span class="keyword">break</span>;<br/>
-<span class="in2"></span>}<br/>
-<span class="in1"></span>}<br/>
-<br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">main</span>() {<br/>
 <span class="in2"></span><span class="keyword">using</span> <span class="type">Board</span> = <span class="type">std</span>::<span class="var">array</span>&lt;<span class="type">signed</span> <span class="type">char</span>, <span class="num">120</span>&gt;;<br/>
 <span class="in2"></span><span class="type">Board</span> <span class="var">board</span> {<br/>
@@ -50,7 +39,13 @@
 <span class="in3"></span>-<span class="num">200</span>.<span class="num">0f</span>, -<span class="num">9</span>.<span class="num">0f</span>, -<span class="num">3</span>.<span class="num">25f</span>, -<span class="num">3</span>.<span class="num">5f</span>, -<span class="num">5</span>.<span class="num">0f</span>, -<span class="num">1</span>.<span class="num">0f</span>,<br/>
 <span class="in3"></span><span class="num">0</span>.<span class="num">0f</span>, <span class="num">1</span>.<span class="num">0f</span>, <span class="num">5</span>.<span class="num">0f</span>, <span class="num">3</span>.<span class="num">5f</span>, <span class="num">3</span>.<span class="num">25f</span>, <span class="num">9</span>.<span class="num">0f</span>, <span class="num">200</span>.<span class="num">0f</span><br/>
 <span class="in2"></span>};<br/>
-<span class="in2"></span><span class="var">float</span> *<span class="var">pieces_mat</span> { <span class="var">pieces_mat</span> + <span class="num">6</span> };<br/>
+<span class="in2"></span><span class="var">float</span> *<span class="var">pieces_mat</span> { <span class="var">_pieces_mat</span> + <span class="num">6</span> };<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">_pieces_board</span>[] {<br/>
+<span class="in3"></span><span class="str">"♚"</span>, <span class="str">"♛"</span>, <span class="str">"♞"</span>, <span class="str">"♝"</span>, <span class="str">"♜"</span>, <span class="str">"♟"</span>, <span class="str">" "</span>,<br/>
+<span class="in3"></span><span class="str">"♙"</span>, <span class="str">"♖"</span>, <span class="str">"♗"</span>, <span class="str">"♘"</span>, <span class="str">"♕"</span>, <span class="str">"♔"</span><br/>
+<span class="in2"></span>};<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> *<span class="var">pieces_board</span> { <span class="var">_pieces_board</span> + <span class="num">6</span> };<br/>
+<br/>
 <span class="in2"></span><span class="type">struct</span> <span class="type">State</span> {<br/>
 <span class="in3"></span><span class="type">bool</span> <span class="var">wh_o_o</span> { <span class="num">true</span> };<br/>
 <span class="in3"></span><span class="type">bool</span> <span class="var">wh_o_o_o</span> { <span class="num">true</span> };<br/>
@@ -68,23 +63,14 @@
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"p"</span>) {<br/>
 <span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
 <span class="in4"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">7</span>; <span class="var">r</span> &gt;= <span class="num">0</span>; --<span class="var">r</span>) {<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  "</span> &lt;&lt; (<span class="var">r</span> + <span class="num">1</span>) &lt;&lt; <span class="str">"  "</span>;<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; (<span class="var">r</span> + <span class="num">1</span>) &lt;&lt; <span class="str">" "</span>;<br/>
 <span class="in5"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">f</span> = <span class="num">0</span>; <span class="var">f</span> &lt;= <span class="num">7</span>; ++<span class="var">f</span>) {<br/>
 <span class="in6"></span><span class="type">signed</span> <span class="type">char</span> <span class="var">c</span> { <span class="var">board</span>[<span class="var">r</span> * <span class="num">10</span> + <span class="num">21</span> + <span class="var">f</span>] };<br/>
-<span class="in6"></span><span class="keyword">if</span> (<span class="var">c</span> &gt; <span class="num">0</span>) {<br/>
-<span class="in7"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'*'</span>;<br/>
-<span class="in7"></span><span class="fn">draw_fig</span>(<span class="var">c</span>);<br/>
-<span class="in6"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">c</span> &lt; <span class="num">0</span>) {<br/>
-<span class="in7"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'.'</span>;<br/>
-<span class="in7"></span><span class="fn">draw_fig</span>(-<span class="var">c</span>);<br/>
-<span class="in6"></span>} <span class="keyword">else</span> {<br/>
-<span class="in7"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"__"</span>;<br/>
-<span class="in6"></span>}<br/>
-<span class="in6"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">" "</span>;<br/>
+<span class="in6"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">pieces_board</span>[<span class="var">c</span>];<br/>
 <span class="in5"></span>}<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n\n"</span>;<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
 <span class="in4"></span>}<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"      a  b  c  d  e  f  g  h\n\n"</span>;<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  abcdefgh\n\n"</span>;<br/>
 <span class="in4"></span><span class="keyword">continue</span>;<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"c"</span>) {<br/>

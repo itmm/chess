@@ -5,17 +5,6 @@
 	#include <iostream>
 	#include <cmath>
 
-	void draw_fig(char c) {
-		switch (c) {
-			case 1: std::cout << "B"; break;
-			case 2: std::cout << "T"; break;
-			case 3: std::cout << "L"; break;
-			case 4: std::cout << "S"; break;
-			case 5: std::cout << "D"; break;
-			case 6: std::cout << "K"; break;
-		}
-	}
-
 	int main() {
 		using Board = std::array<signed char, 120>;
 		Board board {
@@ -36,7 +25,13 @@
 			-200.0f, -9.0f, -3.25f, -3.5f, -5.0f, -1.0f,
 			0.0f, 1.0f, 5.0f, 3.5f, 3.25f, 9.0f, 200.0f
 		};
-		float *pieces_mat { pieces_mat + 6 };
+		float *pieces_mat { _pieces_mat + 6 };
+		std::string _pieces_board[] {
+			"♚", "♛", "♞", "♝", "♜", "♟", " ",
+			"♙", "♖", "♗", "♘", "♕", "♔"
+		};
+		std::string *pieces_board { _pieces_board + 6 };
+
 		struct State {
 			bool wh_o_o { true };
 			bool wh_o_o_o { true };
@@ -54,23 +49,14 @@
 			if (cmd == "p") {
 				std::cout << "\n";
 				for (int r = 7; r >= 0; --r) {
-					std::cout << "  " << (r + 1) << "  ";
+					std::cout << (r + 1) << " ";
 					for (int f = 0; f <= 7; ++f) {
 						signed char c { board[r * 10 + 21 + f] };
-						if (c > 0) {
-							std::cout << '*';
-							draw_fig(c);
-						} else if (c < 0) {
-							std::cout << '.';
-							draw_fig(-c);
-						} else {
-							std::cout << "__";
-						}
-						std::cout << " ";
+						std::cout << pieces_board[c];
 					}
-					std::cout << "\n\n";
+					std::cout << "\n";
 				}
-				std::cout << "      a  b  c  d  e  f  g  h\n\n";
+				std::cout << "  abcdefgh\n\n";
 				continue;
 			}
 			if (cmd == "c") {
