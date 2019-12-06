@@ -71,6 +71,7 @@
 <span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
 <span class="in4"></span>}<br/>
 <span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  abcdefgh\n\n"</span>;<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  Material: "</span> &lt;&lt; <span class="var">abs_material</span> &lt;&lt; <span class="str">" ("</span> &lt;&lt; <span class="var">material</span> &lt;&lt; <span class="str">")\n\n"</span>;<br/>
 <span class="in4"></span><span class="keyword">continue</span>;<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">cmd</span> == <span class="str">"c"</span>) {<br/>
@@ -108,7 +109,7 @@
 <span class="in6"></span><span class="var">abs_material</span> += <span class="fn">fabs</span>(<span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">p</span>]]);<br/>
 <span class="in6"></span><span class="keyword">continue</span>;<br/>
 <span class="in5"></span>}<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"unkonwn piece "</span> &lt;&lt; <span class="var">piece</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"unknown piece "</span> &lt;&lt; <span class="var">piece</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
 <span class="in4"></span>}<br/>
 <span class="in4"></span><span class="keyword">continue</span>;<br/>
 <span class="in3"></span>}<br/>
@@ -118,8 +119,6 @@
 <span class="in4"></span><span class="var">material</span> -= <span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">to</span>]];<br/>
 <span class="in4"></span><span class="var">abs_material</span> -= <span class="fn">fabs</span>(<span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">to</span>]]);<br/>
 <span class="in4"></span><span class="var">board</span>[<span class="var">to</span>] = <span class="var">board</span>[<span class="var">from</span>]; <span class="var">board</span>[<span class="var">from</span>] = <span class="num">0</span>;<br/>
-<span class="in4"></span><span class="var">material</span> += <span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">to</span>]];<br/>
-<span class="in4"></span><span class="var">abs_material</span> += <span class="fn">fabs</span>(<span class="var">pieces_mat</span>[<span class="var">board</span>[<span class="var">to</span>]]);<br/>
 <span class="in4"></span><span class="keyword">continue</span>;<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"unknown command "</span> &lt;&lt; <span class="var">cmd</span> &lt;&lt; <span class="str">"\n"</span>;<br/>

@@ -58,6 +58,7 @@
 					std::cout << "\n";
 				}
 				std::cout << "  abcdefgh\n\n";
+				std::cout << "  Material: " << abs_material << " (" << material << ")\n\n";
 				continue;
 			}
 			if (cmd == "c") {
@@ -95,7 +96,7 @@
 						abs_material += fabs(pieces_mat[board[p]]);
 						continue;
 					}
-					std::cout << "unkonwn piece " << piece << "\n";
+					std::cout << "unknown piece " << piece << "\n";
 				}
 				continue;
 			}
@@ -105,8 +106,6 @@
 				material -= pieces_mat[board[to]];
 				abs_material -= fabs(pieces_mat[board[to]]);
 				board[to] = board[from]; board[from] = 0;
-				material += pieces_mat[board[to]];
-				abs_material += fabs(pieces_mat[board[to]]);
 				continue;
 			}
 			std::cout << "unknown command " << cmd << "\n";
