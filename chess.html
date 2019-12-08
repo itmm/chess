@@ -84,26 +84,7 @@ first task is to print the board
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">globals</span>)</span><br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">X</span> { <span class="num">100</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">EE</span> { <span class="num">0</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WP</span> { <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WR</span> { <span class="num">2</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WN</span> { <span class="num">3</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WS</span> { <span class="num">4</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WQ</span> { <span class="num">5</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WK</span> { <span class="num">6</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BP</span> { -<span class="num">1</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BR</span> { -<span class="num">2</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BN</span> { -<span class="num">3</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BS</span> { -<span class="num">4</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BQ</span> { -<span class="num">5</span> };<br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BK</span> { -<span class="num">6</span> };<br/>
-<span class="macro">@end(<span class="name">globals</span>)</span><br/>
-</code></div>
-</div>
-<div><div>
-<code>
-<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">board prereqs</span>)</span>;<br/>
 <span class="in1"></span><span class="type">signed</span> <span class="type">char</span> <span class="var">board</span>[<span class="num">120</span>] {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">initial board</span>)</span><br/>
 <span class="in1"></span>};<br/>
@@ -121,17 +102,64 @@ the boarder is initialized with 100
 </div>
 <div><div>
 <code>
+<span class="macro">@add(<span class="name">board prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">X</span> { <span class="num">100</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">EE</span> { <span class="num">0</span> };<br/>
+<span class="macro">@end(<span class="name">board prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+the constant <code><span class="var">X</span></code> is used for border fields
+</li><li>
+the constant <code><span class="var">EE</span></code> is used for empty fields
+</li><li>
+<code><span class="var">EE</span></code> must be <code><span class="num">0</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">board prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WP</span> { <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WR</span> { <span class="num">2</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WB</span> { <span class="num">3</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WN</span> { <span class="num">4</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WQ</span> { <span class="num">5</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">WK</span> { <span class="num">6</span> };<br/>
+<span class="macro">@end(<span class="name">board prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+constants for the white figures
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">board prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BP</span> { -<span class="num">1</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BR</span> { -<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BB</span> { -<span class="num">3</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BN</span> { -<span class="num">4</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BQ</span> { -<span class="num">5</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">BK</span> { -<span class="num">6</span> };<br/>
+<span class="macro">@end(<span class="name">board prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+constants for the black figures
+</li><li>
+black figures must have the negative value of the white figures
+</li></ul>
+</div>
+<div><div>
+<code>
 <span class="macro">@def(<span class="name">initial board</span>)</span><br/>
 <span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span>,<br/>
-<span class="in1"></span><span class="var">X</span>, <span class="var">WR</span>, <span class="var">WS</span>, <span class="var">WN</span>, <span class="var">WQ</span>, <span class="var">WK</span>, <span class="var">WN</span>, <span class="var">WS</span>, <span class="var">WR</span>, <span class="var">X</span>,<br/>
+<span class="in1"></span><span class="var">X</span>, <span class="var">WR</span>, <span class="var">WN</span>, <span class="var">WB</span>, <span class="var">WQ</span>, <span class="var">WK</span>, <span class="var">WB</span>, <span class="var">WN</span>, <span class="var">WR</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">X</span>,<br/>
-<span class="in1"></span><span class="var">X</span>, <span class="var">BR</span>, <span class="var">BS</span>, <span class="var">BN</span>, <span class="var">BQ</span>, <span class="var">BK</span>, <span class="var">BN</span>, <span class="var">BS</span>, <span class="var">BR</span>, <span class="var">X</span>,<br/>
+<span class="in1"></span><span class="var">X</span>, <span class="var">BR</span>, <span class="var">BN</span>, <span class="var">BB</span>, <span class="var">BQ</span>, <span class="var">BK</span>, <span class="var">BB</span>, <span class="var">BN</span>, <span class="var">BR</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span><br/>
 <span class="macro">@end(<span class="name">initial board</span>)</span><br/>
@@ -280,7 +308,7 @@ no advantage for any color
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">print board</span>)</span><br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  Material: "</span> &lt;&lt;<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  material: "</span> &lt;&lt;<br/>
 <span class="in2"></span><span class="var">abs_material</span> &lt;&lt; <span class="str">" ("</span> &lt;&lt;<br/>
 <span class="in2"></span><span class="var">material</span> &lt;&lt; <span class="str">")\n"</span>;<br/>
 <span class="macro">@end(<span class="name">print board</span>)</span><br/>
@@ -498,8 +526,8 @@ switch playing color between <code><span class="num">1</span></code> (white) and
 <code>
 <span class="macro">@add(<span class="name">print board</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  "</span> &lt;&lt;<br/>
-<span class="in2"></span>(<span class="var">state</span>.<span class="var">color</span> &gt; <span class="num">0</span> ? <span class="str">"Weiß"</span> :<br/>
-<span class="in3"></span><span class="str">"Schwarz"</span>)  &lt;&lt; <span class="str">" am Zug\n"</span>;<br/>
+<span class="in2"></span>(<span class="var">state</span>.<span class="var">color</span> &gt; <span class="num">0</span> ? <span class="str">"white"</span> :<br/>
+<span class="in3"></span><span class="str">"black"</span>)  &lt;&lt; <span class="str">" is moving\n"</span>;<br/>
 <span class="macro">@end(<span class="name">print board</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -848,7 +876,7 @@ the iteration stops if a non-empty field is processed
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">pseudo moves for piece</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">WS</span> || <span class="var">p</span> == <span class="var">BS</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">WN</span> || <span class="var">p</span> == <span class="var">BN</span>) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">21</span>, <span class="var">c</span>);<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">19</span>, <span class="var">c</span>);<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">12</span>, <span class="var">c</span>);<br/>
@@ -968,7 +996,7 @@ rooks move on ranks or files
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">pseudo moves for piece</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">WN</span> || <span class="var">p</span> == <span class="var">BN</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">WB</span> || <span class="var">p</span> == <span class="var">BB</span>) {<br/>
 <span class="in2"></span><span class="fn">add_row</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">c</span>, -<span class="num">11</span>);<br/>
 <span class="in2"></span><span class="fn">add_row</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">c</span>, -<span class="num">9</span>);<br/>
 <span class="in2"></span><span class="fn">add_row</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">c</span>, <span class="num">9</span>);<br/>
@@ -1154,7 +1182,7 @@ signal wrong piece syntax
 </div>
 <div><div>
 <code>
-<span class="macro">@def(<span class="name">add piece</span>)</span> {<br/>
+<span class="macro">@def(<span class="name">add piece</span>)</span><br/>
 <span class="in1"></span><span class="type">const</span> <span class="type">char</span> *<span class="var">cs</span> { <span class="var">piece</span>.<span class="fn">c_str</span>() };<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">piece</span>.<span class="fn">size</span>() == <span class="num">3</span> &amp;&amp;<br/>
 <span class="in2"></span><span class="fn">is_pos</span>(<span class="var">cs</span> + <span class="num">1</span>)<br/>
@@ -1162,7 +1190,7 @@ signal wrong piece syntax
 <span class="in2"></span><span class="macro">@put(<span class="name">do add piece</span>)</span>;<br/>
 <span class="in2"></span><span class="keyword">continue</span>;<br/>
 <span class="in1"></span>}<br/>
-} <span class="macro">@end(<span class="name">add piece</span>)</span><br/>
+<span class="macro">@end(<span class="name">add piece</span>)</span><br/>
 </code></div>
 <ul><li>
 each piece starts with the kind of the piece
@@ -1190,17 +1218,28 @@ a piece can be removed with <code>.</code> and the position
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">put other pieces</span>)</span><br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'B'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="num">1</span>); <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'T'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="num">2</span>); <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'L'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="num">3</span>); <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'S'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="num">4</span>); <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'D'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="num">5</span>); <span class="keyword">break</span>;<br/>
-<span class="in1"></span><span class="keyword">case</span> <span class="str">'K'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="num">6</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'P'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WP</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'R'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WR</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'B'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WB</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'N'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WN</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'Q'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WQ</span>); <span class="keyword">break</span>;<br/>
+<span class="in1"></span><span class="keyword">case</span> <span class="str">'K'</span>: <span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WK</span>); <span class="keyword">break</span>;<br/>
 <span class="macro">@end(<span class="name">put other pieces</span>)</span><br/>
 </code></div>
 <ul><li>
-use german uppercase letters to set the figure
+use uppercase letters to set the figure
 </li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">add piece</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">piece</span>.<span class="fn">size</span>() == <span class="num">2</span> &amp;&amp; <span class="fn">is_pos</span>(<span class="var">cs</span>)) {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">p</span> { <span class="fn">pos_to_idx</span>(<span class="var">cs</span>) };<br/>
+<span class="in2"></span><span class="fn">set</span>(<span class="var">p</span>, <span class="var">color</span> * <span class="var">WP</span>);<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">add piece</span>)</span><br/>
+</code></div>
 </div>
 </div>
 <h2>Add State</h2>

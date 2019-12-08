@@ -48,25 +48,7 @@
 
 ```
 @add(globals)
-	constexpr signed char X { 100 };
-	constexpr signed char EE { 0 };
-	constexpr signed char WP { 1 };
-	constexpr signed char WR { 2 };
-	constexpr signed char WN { 3 };
-	constexpr signed char WS { 4 };
-	constexpr signed char WQ { 5 };
-	constexpr signed char WK { 6 };
-	constexpr signed char BP { -1 };
-	constexpr signed char BR { -2 };
-	constexpr signed char BN { -3 };
-	constexpr signed char BS { -4 };
-	constexpr signed char BQ { -5 };
-	constexpr signed char BK { -6 };
-@end(globals)
-```
-
-```
-@add(globals)
+	@put(board prereqs);
 	signed char board[120] {
 		@put(initial board)
 	};
@@ -78,17 +60,52 @@
 * the boarder is initialized with 100 
 
 ```
+@add(board prereqs)
+	constexpr signed char X { 100 };
+	constexpr signed char EE { 0 };
+@end(board prereqs)
+```
+* the constant `X` is used for border fields
+* the constant `EE` is used for empty fields
+* `EE` must be `0`
+
+```
+@add(board prereqs)
+	constexpr signed char WP { 1 };
+	constexpr signed char WR { 2 };
+	constexpr signed char WB { 3 };
+	constexpr signed char WN { 4 };
+	constexpr signed char WQ { 5 };
+	constexpr signed char WK { 6 };
+@end(board prereqs)
+```
+* constants for the white figures
+
+```
+@add(board prereqs)
+	constexpr signed char BP { -1 };
+	constexpr signed char BR { -2 };
+	constexpr signed char BB { -3 };
+	constexpr signed char BN { -4 };
+	constexpr signed char BQ { -5 };
+	constexpr signed char BK { -6 };
+@end(board prereqs)
+```
+* constants for the black figures
+* black figures must have the negative value of the white figures
+
+```
 @def(initial board)
 	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
 	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
-	X, WR, WS, WN, WQ, WK, WN, WS, WR, X,
+	X, WR, WN, WB, WQ, WK, WB, WN, WR, X,
 	X, WP, WP, WP, WP, WP, WP, WP, WP, X,
 	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
 	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
 	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
 	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
 	X, BP, BP, BP, BP, BP, BP, BP, BP, X,
-	X, BR, BS, BN, BQ, BK, BN, BS, BR, X,
+	X, BR, BN, BB, BQ, BK, BB, BN, BR, X,
 	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
 	X,  X,  X,  X,  X,  X,  X,  X,  X, X
 @end(initial board)
@@ -192,7 +209,7 @@
 
 ```
 @add(print board)
-	std::cout << "  Material: " <<
+	std::cout << "  material: " <<
 		abs_material << " (" <<
 		material << ")\n";
 @end(print board)
@@ -351,8 +368,8 @@
 ```
 @add(print board)
 	std::cout << "  " <<
-		(state.color > 0 ? "Weiß" :
-			"Schwarz")  << " am Zug\n";
+		(state.color > 0 ? "white" :
+			"black")  << " is moving\n";
 @end(print board)
 ```
 * print which color is playing
@@ -620,7 +637,7 @@
 
 ```
 @def(pseudo moves for piece)
-	if (p == WS || p == BS) {
+	if (p == WN || p == BN) {
 		add_if_valid(it, f, f - 21, c);
 		add_if_valid(it, f, f - 19, c);
 		add_if_valid(it, f, f - 12, c);
@@ -718,7 +735,7 @@
 
 ```
 @add(pseudo moves for piece)
-	if (p == WN || p == BN) {
+	if (p == WB || p == BB) {
 		add_row(it, f, c, -11);
 		add_row(it, f, c, -9);
 		add_row(it, f, c, 9);
@@ -852,7 +869,7 @@
 * signal wrong piece syntax
 
 ```
-@def(add piece) {
+@def(add piece)
 	const char *cs { piece.c_str() };
 	if (piece.size() == 3 &&
 		is_pos(cs + 1)
@@ -860,7 +877,7 @@
 		@put(do add piece);
 		continue;
 	}
-} @end(add piece)
+@end(add piece)
 ```
 * each piece starts with the kind of the piece
 * and a position
@@ -881,15 +898,25 @@
 
 ```
 @def(put other pieces)
-	case 'B': set(p, color * 1); break;
-	case 'T': set(p, color * 2); break;
-	case 'L': set(p, color * 3); break;
-	case 'S': set(p, color * 4); break;
-	case 'D': set(p, color * 5); break;
-	case 'K': set(p, color * 6); break;
+	case 'P': set(p, color * WP); break;
+	case 'R': set(p, color * WR); break;
+	case 'B': set(p, color * WB); break;
+	case 'N': set(p, color * WN); break;
+	case 'Q': set(p, color * WQ); break;
+	case 'K': set(p, color * WK); break;
 @end(put other pieces)
 ```
-* use german uppercase letters to set the figure
+* use uppercase letters to set the figure
+
+```
+@add(add piece)
+	if (piece.size() == 2 && is_pos(cs)) {
+		int p { pos_to_idx(cs) };
+		set(p, color * WP);
+		continue;
+	}
+@end(add piece)
+```
 
 ## Add State
 * keep the current state of the chess match
