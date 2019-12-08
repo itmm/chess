@@ -103,12 +103,13 @@ the boarder is initialized with 100
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">board prereqs</span>)</span><br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">X</span> { <span class="num">100</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">XX</span> { <span class="num">100</span> };<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">X</span> { <span class="var">XX</span> };<br/>
 <span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">EE</span> { <span class="num">0</span> };<br/>
 <span class="macro">@end(<span class="name">board prereqs</span>)</span><br/>
 </code></div>
 <ul><li>
-the constant <code><span class="var">X</span></code> is used for border fields
+the constant <code><span class="var">XX</span></code> or <code><span class="var">X</span></code> is used for border fields
 </li><li>
 the constant <code><span class="var">EE</span></code> is used for empty fields
 </li><li>
@@ -150,8 +151,8 @@ black figures must have the negative value of the white figures
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">initial board</span>)</span><br/>
-<span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span>,<br/>
-<span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span>,<br/>
+<span class="in1"></span><span class="var">X</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">X</span>,<br/>
+<span class="in1"></span><span class="var">X</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">WR</span>, <span class="var">WN</span>, <span class="var">WB</span>, <span class="var">WQ</span>, <span class="var">WK</span>, <span class="var">WB</span>, <span class="var">WN</span>, <span class="var">WR</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">WP</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">X</span>,<br/>
@@ -160,8 +161,8 @@ black figures must have the negative value of the white figures
 <span class="in1"></span><span class="var">X</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">EE</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">BP</span>, <span class="var">X</span>,<br/>
 <span class="in1"></span><span class="var">X</span>, <span class="var">BR</span>, <span class="var">BN</span>, <span class="var">BB</span>, <span class="var">BQ</span>, <span class="var">BK</span>, <span class="var">BB</span>, <span class="var">BN</span>, <span class="var">BR</span>, <span class="var">X</span>,<br/>
-<span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span>,<br/>
-<span class="in1"></span><span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>,  <span class="var">X</span>, <span class="var">X</span><br/>
+<span class="in1"></span><span class="var">X</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">X</span>,<br/>
+<span class="in1"></span><span class="var">X</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">XX</span>, <span class="var">X</span><br/>
 <span class="macro">@end(<span class="name">initial board</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -343,7 +344,7 @@ offset is used again to allow negative indices
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
 <ul><li>
-needs `@f(fabs)
+needs <code><span class="fn">fabs</span></code>
 </li></ul>
 </div>
 <div><div>
@@ -498,6 +499,9 @@ and perform move
 <div>
 <h2>Switch Move Colors</h2>
 </div>
+<ul><li>
+change the colors between black and white
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -653,7 +657,7 @@ so any move found will top these values
 <code>
 <span class="macro">@def(<span class="name">best move</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="num">120</span>; ++<span class="var">i</span>) {<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">i</span>] != <span class="var">X</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">i</span>] != <span class="var">XX</span> &amp;&amp;<br/>
 <span class="in3"></span><span class="var">board</span>[<span class="var">i</span>] * <span class="var">color</span> &gt; <span class="num">0</span><br/>
 <span class="in2"></span>) {<br/>
 <span class="in3"></span><span class="macro">@put(<span class="name">check for best move</span>)</span>;<br/>
@@ -800,7 +804,7 @@ an improvement if black is playing
 <code>
 <span class="macro">@def(<span class="name">pseudo moves</span>)</span><br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">p</span> { <span class="var">board</span>[<span class="var">f</span>] };<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">EE</span> || <span class="var">p</span> == <span class="var">X</span>) { <span class="keyword">return</span>; }<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">EE</span> || <span class="var">p</span> == <span class="var">XX</span>) { <span class="keyword">return</span>; }<br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">c</span> { <span class="var">p</span> &gt; <span class="num">0</span> ? <span class="num">1</span> : -<span class="num">1</span> };<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">pseudo moves for piece</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">pseudo moves</span>)</span><br/>
@@ -820,7 +824,7 @@ calculate the moves depending on the figure type
 <span class="in2"></span><span class="type">int</span> <span class="var">f</span>, <span class="type">int</span> <span class="var">t</span>, <span class="type">int</span> <span class="var">color</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">x</span> { <span class="var">board</span>[<span class="var">t</span>] };<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">x</span> == <span class="var">X</span>) { <span class="keyword">return</span> <span class="num">false</span>; }<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">x</span> == <span class="var">XX</span>) { <span class="keyword">return</span> <span class="num">false</span>; }<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">x</span> * <span class="var">color</span> &gt; <span class="num">0</span>) {<br/>
 <span class="in3"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
 <span class="in2"></span>}<br/>

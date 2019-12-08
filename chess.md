@@ -61,11 +61,12 @@
 
 ```
 @add(board prereqs)
-	constexpr signed char X { 100 };
+	constexpr signed char XX { 100 };
+	constexpr signed char X { XX };
 	constexpr signed char EE { 0 };
 @end(board prereqs)
 ```
-* the constant `X` is used for border fields
+* the constant `XX` or `X` is used for border fields
 * the constant `EE` is used for empty fields
 * `EE` must be `0`
 
@@ -96,8 +97,8 @@
 
 ```
 @def(initial board)
-	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
-	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
+	X, XX, XX, XX, XX, XX, XX, XX, XX, X,
+	X, XX, XX, XX, XX, XX, XX, XX, XX, X,
 	X, WR, WN, WB, WQ, WK, WB, WN, WR, X,
 	X, WP, WP, WP, WP, WP, WP, WP, WP, X,
 	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
@@ -106,8 +107,8 @@
 	X, EE, EE, EE, EE, EE, EE, EE, EE, X,
 	X, BP, BP, BP, BP, BP, BP, BP, BP, X,
 	X, BR, BN, BB, BQ, BK, BB, BN, BR, X,
-	X,  X,  X,  X,  X,  X,  X,  X,  X, X,
-	X,  X,  X,  X,  X,  X,  X,  X,  X, X
+	X, XX, XX, XX, XX, XX, XX, XX, XX, X,
+	X, XX, XX, XX, XX, XX, XX, XX, XX, X
 @end(initial board)
 ```
 * empty fields are `0`
@@ -236,7 +237,7 @@
 	#include <cmath>
 @end(globals)
 ```
-* needs `@f(fabs)
+* needs `@f(fabs)`
 
 ```
 @add(globals)
@@ -347,6 +348,7 @@
 * and perform move
 
 ## Switch Move Colors
+* change the colors between black and white
 
 ```
 @def(needed by move)
@@ -462,7 +464,7 @@
 ```
 @def(best move)
 	for (int i = 0; i < 120; ++i) {
-		if (board[i] != X &&
+		if (board[i] != XX &&
 			board[i] * color > 0
 		) {
 			@put(check for best move);
@@ -577,7 +579,7 @@
 ```
 @def(pseudo moves)
 	auto p { board[f] };
-	if (p == EE || p == X) { return; }
+	if (p == EE || p == XX) { return; }
 	int c { p > 0 ? 1 : -1 };
 	@put(pseudo moves for piece);
 @end(pseudo moves)
@@ -592,7 +594,7 @@
 		int f, int t, int color
 	) {
 		auto x { board[t] };
-		if (x == X) { return false; }
+		if (x == XX) { return false; }
 		if (x * color > 0) {
 			return false;
 		}
@@ -807,6 +809,18 @@
 ```
 * can the own king be taken?
 * if so no reason to continue the loop
+
+## Multiple Moves
+* TODO
+
+## En Passant
+* TODO
+
+## Castling
+* TODO
+
+## Pawn Promotion
+* TODO
 
 ## Clear Board
 * note essential
