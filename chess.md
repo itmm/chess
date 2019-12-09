@@ -60,7 +60,7 @@
 * the boarder is initialized with 100 
 
 ```
-@add(board prereqs)
+@def(board prereqs)
 	constexpr signed char XX { 100 };
 	constexpr signed char X { XX };
 	constexpr signed char EE { 0 };
@@ -368,9 +368,27 @@
 * switch playing color between `1` (white) and `-1` (black)
 
 ```
+@add(globals)
+	inline bool is_wh(int c) {
+		return c > 0;
+	}
+@end(globals)
+```
+* how to determine that a color is white
+
+```
+@add(globals)
+	inline bool is_bl(int c) {
+		return c < 0;
+	}
+@end(globals)
+```
+* how to determine that a color is black
+
+```
 @add(print board)
 	std::cout << "  " <<
-		(state.color > 0 ? "white" :
+		(is_wh(state.color) ? "white" :
 			"black")  << " is moving\n";
 @end(print board)
 ```
@@ -428,7 +446,7 @@
 		float &best_wh, float &best_bl
 	) {
 		@put(best move);
-		return color > 0 ?
+		return is_wh(color) ?
 			best_wh : best_bl;
 	}
 @end(globals)
@@ -462,10 +480,28 @@
 * so any move found will top these values
 
 ```
+@def(best move prereqs)
+	inline bool same_c(int p, int c) {
+		return board[p] * c > 0;
+	}
+@end(best move prereqs)
+```
+* has piece on board same color?
+
+```
+@add(best move prereqs)
+	inline bool opp_c(int p, int c) {
+		return board[p] * c < 0;
+	}
+@end(best move prereqs)
+```
+* has piece on board different color?
+
+```
 @def(best move)
 	for (int i = 0; i < 120; ++i) {
 		if (board[i] != XX &&
-			board[i] * color > 0
+			same_c(i, color)
 		) {
 			@put(check for best move);
 		}
@@ -492,11 +528,13 @@
   own king is still in check
 
 ```
-@def(best move prereqs)
+@add(best move prereqs)
 	@put(moves prereqs)
 	template<typename I>
 	void moves(int f, const I &it) {
-		int c { board[f] > 0 ? 1 : -1 };
+		int c {
+			is_wh(board[f]) ? 1 : -1
+		};
 		pseudo_moves(f, [&](int t) {
 			@put(check for check);
 		});
@@ -510,7 +548,7 @@
 ```
 @add(best move prereqs)
 	bool eval_move(
-		int from, int to, int color,
+		int f, int t, int c,
 		float &best_wh, float &best_bl
 	) {
 		bool better { false };
@@ -541,11 +579,9 @@
 
 ```
 @def(eval move)
-	signed char old { board[to] };
-	move(from, to);
+	@mul(make revertable move);
 	@put(check for improvement);
-	move(to, from);
-	set(to, old);
+	@mul(revert move);
 @end(eval move)
 ```
 * perform the move but save the origin constellation
@@ -553,10 +589,24 @@
 * undo the move at the end
 
 ```
+@def(make revertable move)
+	auto old_t { board[t] };
+	move(f, t);
+@end(make revertable move)
+```
+* store everything to revert move before performing it
+
+```
+@def(revert move)
+	move(t, f);
+	set(t, old_t);
+@end(revert move)
+```
+* revert move
+
+```
 @def(check for improvement)
-	if (color > 0 &&
-		material > best_wh
-	) {
+	if (is_wh(c) && material > best_wh) {
 		best_wh = material;
 		better = true;
 	}
@@ -566,9 +616,7 @@
 
 ```
 @add(check for improvement)
-	if (color < 0 &&
-		material < best_bl
-	) {
+	if (is_bl(c) && material < best_bl) {
 		best_bl = material;
 		better = true;
 	}
@@ -580,7 +628,7 @@
 @def(pseudo moves)
 	auto p { board[f] };
 	if (p == EE || p == XX) { return; }
-	int c { p > 0 ? 1 : -1 };
+	int c { is_wh(p) ? 1 : -1 };
 	@put(pseudo moves for piece);
 @end(pseudo moves)
 ```
@@ -595,7 +643,7 @@
 	) {
 		auto x { board[t] };
 		if (x == XX) { return false; }
-		if (x * color > 0) {
+		if (same_c(t, color)) {
 			return false;
 		}
 		return true;
@@ -670,10 +718,10 @@
 	if (board[f + 10] == 0) {
 		add_if_valid(it, f, f - 10, c);
 	}
-	if (board[f + 9] * c < 0) {
+	if (opp_c(f + 9, c)) {
 		add_if_valid(it, f, f + 9, c);
 	}
-	if (board[f + 11] * c < 0) {
+	if (opp_c(f + 11, c)) {
 		add_if_valid(it, f, f + 11, c);
 	}
 @end(white pawn moves)
@@ -699,10 +747,10 @@
 	if (board[f - 10] == 0) {
 		add_if_valid(it, f, f - 10, c);
 	}
-	if (board[f - 9] * c < 0) {
+	if (opp_c(f - 9, c)) {
 		add_if_valid(it, f, f - 9, c);
 	}
-	if (board[f - 11] * c < 0) {
+	if (opp_c(f - 11, c)) {
 		add_if_valid(it, f, f - 11, c);
 	}
 @end(black pawn moves)
@@ -781,16 +829,14 @@
 
 ```
 @def(check for check)
-	auto x { board[t] };
-	move(f, t);
+	@mul(make revertable move);
 	bool in_check { false };
 	for (int i = 0; i < 120; ++i) {
-		if (board[i] * c < 0) {
+		if (opp_c(i, c)) {
 			@put(attacks king?)
 		}
 	}
-	move(t, f);
-	set(t, x);
+	@mul(revert move);
 	if (! in_check) { it(t); }
 @end(check for check)
 ```

@@ -102,7 +102,7 @@ the boarder is initialized with 100
 </div>
 <div><div>
 <code>
-<span class="macro">@add(<span class="name">board prereqs</span>)</span><br/>
+<span class="macro">@def(<span class="name">board prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">XX</span> { <span class="num">100</span> };<br/>
 <span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">X</span> { <span class="var">XX</span> };<br/>
 <span class="in1"></span><span class="keyword">constexpr</span> <span class="type">signed</span> <span class="type">char</span> <span class="var">EE</span> { <span class="num">0</span> };<br/>
@@ -296,8 +296,8 @@ the normal value indicates how big the advantage of white is
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">globals</span>)</span><br/>
-<span class="in1"></span><span class="type">float</span> <span class="var">material</span> { <span class="num">0</span>.<span class="num">0f</span> };<br/>
-<span class="in1"></span><span class="type">float</span> <span class="var">abs_material</span> { <span class="num">481</span>.<span class="num">0f</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">material</span> { <span class="num">0</span>.<span class="num">0f</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">abs_material</span> { <span class="num">481</span>.<span class="num">0f</span> };<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -321,12 +321,12 @@ print absolute and relative value
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">globals</span>)</span><br/>
-<span class="in1"></span><span class="type">const</span> <span class="type">float</span> <span class="var">_pieces_mat</span>[] {<br/>
+<span class="in1"></span><span class="type">const</span> <span class="var">float</span> <span class="var">_pieces_mat</span>[] {<br/>
 <span class="in2"></span>-<span class="num">200</span>.<span class="num">0f</span>, -<span class="num">9</span>.<span class="num">0f</span>, -<span class="num">3</span>.<span class="num">25f</span>, -<span class="num">3</span>.<span class="num">5f</span>,<br/>
 <span class="in2"></span>-<span class="num">5</span>.<span class="num">0f</span>, -<span class="num">1</span>.<span class="num">0f</span>, <span class="num">0</span>.<span class="num">0f</span>, <span class="num">1</span>.<span class="num">0f</span>, <span class="num">5</span>.<span class="num">0f</span>,<br/>
 <span class="in2"></span><span class="num">3</span>.<span class="num">5f</span>, <span class="num">3</span>.<span class="num">25f</span>, <span class="num">9</span>.<span class="num">0f</span>, <span class="num">200</span>.<span class="num">0f</span><br/>
 <span class="in1"></span>};<br/>
-<span class="in1"></span><span class="type">const</span> <span class="type">float</span> *<span class="var">pieces_mat</span> {<br/>
+<span class="in1"></span><span class="type">const</span> <span class="var">float</span> *<span class="var">pieces_mat</span> {<br/>
 <span class="in2"></span><span class="var">_pieces_mat</span> + <span class="num">6</span><br/>
 <span class="in1"></span>};<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
@@ -351,7 +351,7 @@ needs <code><span class="fn">fabs</span></code>
 <code>
 <span class="macro">@add(<span class="name">globals</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">add</span>(<span class="type">signed</span> <span class="type">char</span> <span class="var">f</span>) {<br/>
-<span class="in2"></span><span class="type">float</span> <span class="var">m</span> { <span class="var">pieces_mat</span>[<span class="var">f</span>] };<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m</span> { <span class="var">pieces_mat</span>[<span class="var">f</span>] };<br/>
 <span class="in2"></span><span class="var">material</span> += <span class="var">m</span>;<br/>
 <span class="in2"></span><span class="var">abs_material</span> += <span class="fn">fabs</span>(<span class="var">m</span>);<br/>
 <span class="in1"></span>}<br/>
@@ -365,7 +365,7 @@ add piece <code><span class="var">f</span></code> to material count
 <code>
 <span class="macro">@add(<span class="name">globals</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">sub</span>(<span class="type">signed</span> <span class="type">char</span> <span class="var">f</span>) {<br/>
-<span class="in2"></span><span class="type">float</span> <span class="var">m</span> { <span class="var">pieces_mat</span>[<span class="var">f</span>] };<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m</span> { <span class="var">pieces_mat</span>[<span class="var">f</span>] };<br/>
 <span class="in2"></span><span class="var">material</span> -= <span class="var">m</span>;<br/>
 <span class="in2"></span><span class="var">abs_material</span> -= <span class="fn">fabs</span>(<span class="var">m</span>);<br/>
 <span class="in1"></span>}<br/>
@@ -528,9 +528,33 @@ switch playing color between <code><span class="num">1</span></code> (white) and
 </div>
 <div><div>
 <code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">bool</span> <span class="fn">is_wh</span>(<span class="type">int</span> <span class="var">c</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">c</span> &gt; <span class="num">0</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+how to determine that a color is white
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">bool</span> <span class="fn">is_bl</span>(<span class="type">int</span> <span class="var">c</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">c</span> &lt; <span class="num">0</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul><li>
+how to determine that a color is black
+</li></ul>
+</div>
+<div><div>
+<code>
 <span class="macro">@add(<span class="name">print board</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"  "</span> &lt;&lt;<br/>
-<span class="in2"></span>(<span class="var">state</span>.<span class="var">color</span> &gt; <span class="num">0</span> ? <span class="str">"white"</span> :<br/>
+<span class="in2"></span>(<span class="fn">is_wh</span>(<span class="var">state</span>.<span class="var">color</span>) ? <span class="str">"white"</span> :<br/>
 <span class="in3"></span><span class="str">"black"</span>)  &lt;&lt; <span class="str">" is moving\n"</span>;<br/>
 <span class="macro">@end(<span class="name">print board</span>)</span><br/>
 </code></div>
@@ -607,10 +631,10 @@ print from and to positions
 <span class="in1"></span><span class="macro">@put(<span class="name">best move prereqs</span>)</span>;<br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">best_move</span>(<br/>
 <span class="in2"></span><span class="type">int</span> &amp;<span class="var">from</span>, <span class="type">int</span> &amp;<span class="var">to</span>, <span class="type">int</span> <span class="var">color</span>,<br/>
-<span class="in2"></span><span class="type">float</span> &amp;<span class="var">best_wh</span>, <span class="type">float</span> &amp;<span class="var">best_bl</span><br/>
+<span class="in2"></span><span class="var">float</span> &amp;<span class="var">best_wh</span>, <span class="var">float</span> &amp;<span class="var">best_bl</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">best move</span>)</span>;<br/>
-<span class="in2"></span><span class="keyword">return</span> <span class="var">color</span> &gt; <span class="num">0</span> ?<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">is_wh</span>(<span class="var">color</span>) ?<br/>
 <span class="in3"></span><span class="var">best_wh</span> : <span class="var">best_bl</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
@@ -626,21 +650,21 @@ current best values for white and black are kept separatedly
 <span class="macro">@add(<span class="name">globals</span>)</span><br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">limits</span>&gt;<br/>
 <span class="in1"></span><span class="keyword">using</span> <span class="var">nlf</span> =<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">float</span>&gt;;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="var">float</span>&gt;;<br/>
 <span class="macro">@end(<span class="name">globals</span>)</span><br/>
 </code></div>
 <ul><li>
-needs <code><span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">float</span>&gt;</code>
+needs <code><span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="var">float</span>&gt;</code>
 </li></ul>
 </div>
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">calc move</span>)</span><br/>
-<span class="in1"></span><span class="keyword">constexpr</span> <span class="type">float</span> <span class="var">inf</span> {<br/>
+<span class="in1"></span><span class="keyword">constexpr</span> <span class="var">float</span> <span class="var">inf</span> {<br/>
 <span class="in2"></span><span class="var">nlf</span>::<span class="fn">infinity</span>()<br/>
 <span class="in1"></span>};<br/>
-<span class="in1"></span><span class="type">float</span> <span class="var">best_w</span> { -<span class="num">1</span> * <span class="var">inf</span> };<br/>
-<span class="in1"></span><span class="type">float</span> <span class="var">best_b</span> { <span class="var">inf</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">best_w</span> { -<span class="num">1</span> * <span class="var">inf</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">best_b</span> { <span class="var">inf</span> };<br/>
 <span class="in1"></span><span class="fn">best_move</span>(<br/>
 <span class="in2"></span><span class="var">from</span>, <span class="var">to</span>, <span class="var">state</span>.<span class="var">color</span>,<br/>
 <span class="in2"></span><span class="var">best_w</span>, <span class="var">best_b</span><br/>
@@ -655,10 +679,28 @@ so any move found will top these values
 </div>
 <div><div>
 <code>
+<span class="macro">@def(<span class="name">best move prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">bool</span> <span class="fn">same_c</span>(<span class="type">int</span> <span class="var">p</span>, <span class="type">int</span> <span class="var">c</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">board</span>[<span class="var">p</span>] * <span class="var">c</span> &gt; <span class="num">0</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">best move prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">best move prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">inline</span> <span class="type">bool</span> <span class="fn">opp_c</span>(<span class="type">int</span> <span class="var">p</span>, <span class="type">int</span> <span class="var">c</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">board</span>[<span class="var">p</span>] * <span class="var">c</span> &lt; <span class="num">0</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">best move prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
 <span class="macro">@def(<span class="name">best move</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="num">120</span>; ++<span class="var">i</span>) {<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">i</span>] != <span class="var">XX</span> &amp;&amp;<br/>
-<span class="in3"></span><span class="var">board</span>[<span class="var">i</span>] * <span class="var">color</span> &gt; <span class="num">0</span><br/>
+<span class="in3"></span><span class="fn">same_c</span>(<span class="var">i</span>, <span class="var">color</span>)<br/>
 <span class="in2"></span>) {<br/>
 <span class="in3"></span><span class="macro">@put(<span class="name">check for best move</span>)</span>;<br/>
 <span class="in2"></span>}<br/>
@@ -693,11 +735,13 @@ that is all moves possible without checking if after that move the  own king is 
 </div>
 <div><div>
 <code>
-<span class="macro">@def(<span class="name">best move prereqs</span>)</span><br/>
+<span class="macro">@add(<span class="name">best move prereqs</span>)</span><br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">moves prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> <span class="var">I</span>&gt;<br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">moves</span>(<span class="type">int</span> <span class="var">f</span>, <span class="type">const</span> <span class="var">I</span> &amp;<span class="var">it</span>) {<br/>
-<span class="in2"></span><span class="type">int</span> <span class="var">c</span> { <span class="var">board</span>[<span class="var">f</span>] &gt; <span class="num">0</span> ? <span class="num">1</span> : -<span class="num">1</span> };<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">c</span> {<br/>
+<span class="in3"></span><span class="fn">is_wh</span>(<span class="var">board</span>[<span class="var">f</span>]) ? <span class="num">1</span> : -<span class="num">1</span><br/>
+<span class="in2"></span>};<br/>
 <span class="in2"></span><span class="fn">pseudo_moves</span>(<span class="var">f</span>, [&amp;](<span class="type">int</span> <span class="var">t</span>) {<br/>
 <span class="in3"></span><span class="macro">@put(<span class="name">check for check</span>)</span>;<br/>
 <span class="in2"></span>});<br/>
@@ -714,8 +758,8 @@ for each pseudo-legal move the function checks if the move will place  (or keep)
 <code>
 <span class="macro">@add(<span class="name">best move prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="fn">eval_move</span>(<br/>
-<span class="in2"></span><span class="type">int</span> <span class="var">from</span>, <span class="type">int</span> <span class="var">to</span>, <span class="type">int</span> <span class="var">color</span>,<br/>
-<span class="in2"></span><span class="type">float</span> &amp;<span class="var">best_wh</span>, <span class="type">float</span> &amp;<span class="var">best_bl</span><br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">f</span>, <span class="type">int</span> <span class="var">t</span>, <span class="type">int</span> <span class="var">c</span>,<br/>
+<span class="in2"></span><span class="var">float</span> &amp;<span class="var">best_wh</span>, <span class="var">float</span> &amp;<span class="var">best_bl</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="type">bool</span> <span class="var">better</span> { <span class="num">false</span> };<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">eval move</span>)</span>;<br/>
@@ -755,11 +799,9 @@ if it is an improvement, save the move
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">eval move</span>)</span><br/>
-<span class="in1"></span><span class="type">signed</span> <span class="type">char</span> <span class="var">old</span> { <span class="var">board</span>[<span class="var">to</span>] };<br/>
-<span class="in1"></span><span class="fn">move</span>(<span class="var">from</span>, <span class="var">to</span>);<br/>
+<span class="in1"></span><span class="macro">@mul(<span class="name">make revertable move</span>)</span>;<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">check for improvement</span>)</span>;<br/>
-<span class="in1"></span><span class="fn">move</span>(<span class="var">to</span>, <span class="var">from</span>);<br/>
-<span class="in1"></span><span class="fn">set</span>(<span class="var">to</span>, <span class="var">old</span>);<br/>
+<span class="in1"></span><span class="macro">@mul(<span class="name">revert move</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">eval move</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -772,10 +814,30 @@ undo the move at the end
 </div>
 <div><div>
 <code>
+<span class="macro">@def(<span class="name">make revertable move</span>)</span><br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">old_t</span> { <span class="var">board</span>[<span class="var">t</span>] };<br/>
+<span class="in1"></span><span class="fn">move</span>(<span class="var">f</span>, <span class="var">t</span>);<br/>
+<span class="macro">@end(<span class="name">make revertable move</span>)</span><br/>
+</code></div>
+<ul><li>
+store everything to revert move before performing it
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">revert move</span>)</span><br/>
+<span class="in1"></span><span class="fn">move</span>(<span class="var">t</span>, <span class="var">f</span>);<br/>
+<span class="in1"></span><span class="fn">set</span>(<span class="var">t</span>, <span class="var">old_t</span>);<br/>
+<span class="macro">@end(<span class="name">revert move</span>)</span><br/>
+</code></div>
+<ul><li>
+revert move
+</li></ul>
+</div>
+<div><div>
+<code>
 <span class="macro">@def(<span class="name">check for improvement</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">color</span> &gt; <span class="num">0</span> &amp;&amp;<br/>
-<span class="in2"></span><span class="var">material</span> &gt; <span class="var">best_wh</span><br/>
-<span class="in1"></span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">is_wh</span>(<span class="var">c</span>) &amp;&amp; <span class="var">material</span> &gt; <span class="var">best_wh</span>) {<br/>
 <span class="in2"></span><span class="var">best_wh</span> = <span class="var">material</span>;<br/>
 <span class="in2"></span><span class="var">better</span> = <span class="num">true</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -788,9 +850,7 @@ an improvement if white is playing
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">check for improvement</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">color</span> &lt; <span class="num">0</span> &amp;&amp;<br/>
-<span class="in2"></span><span class="var">material</span> &lt; <span class="var">best_bl</span><br/>
-<span class="in1"></span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">is_bl</span>(<span class="var">c</span>) &amp;&amp; <span class="var">material</span> &lt; <span class="var">best_bl</span>) {<br/>
 <span class="in2"></span><span class="var">best_bl</span> = <span class="var">material</span>;<br/>
 <span class="in2"></span><span class="var">better</span> = <span class="num">true</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -805,7 +865,7 @@ an improvement if black is playing
 <span class="macro">@def(<span class="name">pseudo moves</span>)</span><br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">p</span> { <span class="var">board</span>[<span class="var">f</span>] };<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">p</span> == <span class="var">EE</span> || <span class="var">p</span> == <span class="var">XX</span>) { <span class="keyword">return</span>; }<br/>
-<span class="in1"></span><span class="type">int</span> <span class="var">c</span> { <span class="var">p</span> &gt; <span class="num">0</span> ? <span class="num">1</span> : -<span class="num">1</span> };<br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">c</span> { <span class="fn">is_wh</span>(<span class="var">p</span>) ? <span class="num">1</span> : -<span class="num">1</span> };<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">pseudo moves for piece</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">pseudo moves</span>)</span><br/>
 </code></div>
@@ -825,7 +885,7 @@ calculate the moves depending on the figure type
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">x</span> { <span class="var">board</span>[<span class="var">t</span>] };<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">x</span> == <span class="var">XX</span>) { <span class="keyword">return</span> <span class="num">false</span>; }<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">x</span> * <span class="var">color</span> &gt; <span class="num">0</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="fn">same_c</span>(<span class="var">t</span>, <span class="var">color</span>)) {<br/>
 <span class="in3"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
@@ -918,10 +978,10 @@ special treatment for white and black pawns
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">f</span> + <span class="num">10</span>] == <span class="num">0</span>) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">10</span>, <span class="var">c</span>);<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">f</span> + <span class="num">9</span>] * <span class="var">c</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">opp_c</span>(<span class="var">f</span> + <span class="num">9</span>, <span class="var">c</span>)) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> + <span class="num">9</span>, <span class="var">c</span>);<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">f</span> + <span class="num">11</span>] * <span class="var">c</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">opp_c</span>(<span class="var">f</span> + <span class="num">11</span>, <span class="var">c</span>)) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> + <span class="num">11</span>, <span class="var">c</span>);<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">white pawn moves</span>)</span><br/>
@@ -953,10 +1013,10 @@ if a white pawn is on the origin rank it can move two ranks forward  if these tw
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">f</span> - <span class="num">10</span>] == <span class="num">0</span>) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">10</span>, <span class="var">c</span>);<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">f</span> - <span class="num">9</span>] * <span class="var">c</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">opp_c</span>(<span class="var">f</span> - <span class="num">9</span>, <span class="var">c</span>)) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">9</span>, <span class="var">c</span>);<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">f</span> - <span class="num">11</span>] * <span class="var">c</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">opp_c</span>(<span class="var">f</span> - <span class="num">11</span>, <span class="var">c</span>)) {<br/>
 <span class="in2"></span><span class="fn">add_if_valid</span>(<span class="var">it</span>, <span class="var">f</span>, <span class="var">f</span> - <span class="num">11</span>, <span class="var">c</span>);<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">black pawn moves</span>)</span><br/>
@@ -1053,16 +1113,14 @@ kings can move one field in any direction
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">check for check</span>)</span><br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">x</span> { <span class="var">board</span>[<span class="var">t</span>] };<br/>
-<span class="in1"></span><span class="fn">move</span>(<span class="var">f</span>, <span class="var">t</span>);<br/>
+<span class="in1"></span><span class="macro">@mul(<span class="name">make revertable move</span>)</span>;<br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">in_check</span> { <span class="num">false</span> };<br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="num">120</span>; ++<span class="var">i</span>) {<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">board</span>[<span class="var">i</span>] * <span class="var">c</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="fn">opp_c</span>(<span class="var">i</span>, <span class="var">c</span>)) {<br/>
 <span class="in3"></span><span class="macro">@put(<span class="name">attacks king?</span>)</span><br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="fn">move</span>(<span class="var">t</span>, <span class="var">f</span>);<br/>
-<span class="in1"></span><span class="fn">set</span>(<span class="var">t</span>, <span class="var">x</span>);<br/>
+<span class="in1"></span><span class="macro">@mul(<span class="name">revert move</span>)</span>;<br/>
 <span class="in1"></span><span class="keyword">if</span> (! <span class="var">in_check</span>) { <span class="fn">it</span>(<span class="var">t</span>); }<br/>
 <span class="macro">@end(<span class="name">check for check</span>)</span><br/>
 </code></div>
@@ -1087,6 +1145,50 @@ then see if any figure of the opposite color can take the own king
 can the own king be taken?
 </li><li>
 if so no reason to continue the loop
+</li></ul>
+</div>
+</div>
+<h2>Multiple Moves</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Multiple Moves</h2>
+</div>
+<ul><li>
+TODO
+</li></ul>
+</div>
+</div>
+<h2>En Passant</h2>
+<div class="slides">
+<div>
+<div>
+<h2>En Passant</h2>
+</div>
+<ul><li>
+TODO
+</li></ul>
+</div>
+</div>
+<h2>Castling</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Castling</h2>
+</div>
+<ul><li>
+TODO
+</li></ul>
+</div>
+</div>
+<h2>Pawn Promotion</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Pawn Promotion</h2>
+</div>
+<ul><li>
+TODO
 </li></ul>
 </div>
 </div>
