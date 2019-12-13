@@ -48,8 +48,9 @@
 
 ```
 @add(globals)
+	using Elem = signed char;
 	@put(board prereqs);
-	signed char board[120] {
+	Elem board[120] {
 		@put(initial board)
 	};
 @end(globals)
@@ -61,9 +62,9 @@
 
 ```
 @def(board prereqs)
-	constexpr signed char XX { 100 };
-	constexpr signed char X { XX };
-	constexpr signed char EE { 0 };
+	constexpr Elem XX { 100 };
+	constexpr Elem X { XX };
+	constexpr Elem EE { 0 };
 @end(board prereqs)
 ```
 * the constant `XX` or `X` is used for border fields
@@ -72,24 +73,24 @@
 
 ```
 @add(board prereqs)
-	constexpr signed char WP { 1 };
-	constexpr signed char WR { 2 };
-	constexpr signed char WB { 3 };
-	constexpr signed char WN { 4 };
-	constexpr signed char WQ { 5 };
-	constexpr signed char WK { 6 };
+	constexpr Elem WP { 1 };
+	constexpr Elem WR { 2 };
+	constexpr Elem WB { 3 };
+	constexpr Elem WN { 4 };
+	constexpr Elem WQ { 5 };
+	constexpr Elem WK { 6 };
 @end(board prereqs)
 ```
 * constants for the white figures
 
 ```
 @add(board prereqs)
-	constexpr signed char BP { -1 };
-	constexpr signed char BR { -2 };
-	constexpr signed char BB { -3 };
-	constexpr signed char BN { -4 };
-	constexpr signed char BQ { -5 };
-	constexpr signed char BK { -6 };
+	constexpr Elem BP { -1 };
+	constexpr Elem BR { -2 };
+	constexpr Elem BB { -3 };
+	constexpr Elem BN { -4 };
+	constexpr Elem BQ { -5 };
+	constexpr Elem BK { -6 };
 @end(board prereqs)
 ```
 * constants for the black figures
@@ -174,7 +175,7 @@
 
 ```
 @add(globals)
-	inline signed char get(
+	inline Elem get(
 		int f, int r
 	) {
 		return board[f_r_to_idx(f, r)];
@@ -241,8 +242,8 @@
 
 ```
 @add(globals)
-	void add(signed char f) {
-		float m { pieces_mat[f] };
+	void add(Elem e) {
+		float m { pieces_mat[e] };
 		material += m;
 		abs_material += fabs(m);
 	}
@@ -252,8 +253,8 @@
 
 ```
 @add(globals)
-	void sub(signed char f) {
-		float m { pieces_mat[f] };
+	void sub(Elem e) {
+		float m { pieces_mat[e] };
 		material -= m;
 		abs_material -= fabs(m);
 	}
@@ -308,11 +309,9 @@
 
 ```
 @add(globals)
-	inline void set(
-		int pos, signed char fig
-	) {
+	inline void set(int pos, Elem e) {
 		sub(board[pos]);
-		board[pos] = fig;
+		board[pos] = e;
 		add(board[pos]);
 	}
 @end(globals)
@@ -324,10 +323,10 @@
 @add(globals)
 	@put(needed by move);
 	inline void move(
-		int from, int to
+		int from, int to, int promo
 	) {
 		if (from && to) {
-			set(to, board[from]);
+			set(to, promo ?: board[from]);
 			set(from, 0);
 			@put(switch color);
 		}
@@ -341,7 +340,7 @@
 @def(manual move)
 	int from { pos_to_idx(cs) };
 	int to { pos_to_idx(cs + 2) };
-	move(from, to);
+	move(from, to, 0);
 @end(manual move)
 ```
 * calculate the indices of the from and to fields
@@ -401,9 +400,10 @@
 @add(do cmd)
 	if (cmd == "m") {
 		int from { 0 }, to { 0 };
+		Elem promo { EE };
 		@put(calc move);
 		if (from && to) {
-			move(from, to);
+			move(from, to, promo);
 			@put(print move);
 		} else {
 			std::cout << "no move\n";
@@ -433,7 +433,11 @@
 	idx_to_pos(pos, from);
 	std::cout << pos;
 	idx_to_pos(pos, to);
-	std::cout << pos << "\n";
+	std::cout << pos;
+	if (promo) {
+		std::cout << pieces_board[promo];
+	}
+	std::cout << "\n";
 @end(print move)
 ```
 * print from and to positions
@@ -443,7 +447,8 @@
 	@put(best move prereqs);
 	int best_move(
 		int &from, int &to, int color,
-		float &best_wh, float &best_bl
+		float &best_wh, float &best_bl,
+		Elem &promo
 	) {
 		@put(best move);
 		return is_wh(color) ?
@@ -472,7 +477,7 @@
 	float best_b { inf };
 	best_move(
 		from, to, state.color,
-		best_w, best_b
+		best_w, best_b, promo
 	);
 @end(calc move)
 ```
@@ -535,7 +540,9 @@
 		int c {
 			is_wh(board[f]) ? 1 : -1
 		};
-		pseudo_moves(f, [&](int t) {
+		pseudo_moves(f, [&](
+			int t, Elem e
+		) {
 			@put(check for check);
 		});
 	}
@@ -549,7 +556,8 @@
 @add(best move prereqs)
 	bool eval_move(
 		int f, int t, int c,
-		float &best_wh, float &best_bl
+		float &best_wh, float &best_bl,
+		Elem e
 	) {
 		bool better { false };
 		@put(eval move);
@@ -564,12 +572,13 @@
 
 ```
 @def(check for best move)
-	moves(i, [&](int m) {
+	moves(i, [&](int m, Elem e) {
 		if (eval_move(
 			i, m, color,
-			best_wh, best_bl
+			best_wh, best_bl, e
 		)) {
 			from = i; to = m;
+			promo = e;
 		}
 	});
 @end(check for best move)
@@ -590,16 +599,17 @@
 
 ```
 @def(make revertable move)
+	auto old_f { board[f] };
 	auto old_t { board[t] };
-	move(f, t);
+	move(f, t, e);
 @end(make revertable move)
 ```
 * store everything to revert move before performing it
 
 ```
 @def(revert move)
-	move(t, f);
 	set(t, old_t);
+	set(f, old_f);
 @end(revert move)
 ```
 * revert move
@@ -660,7 +670,7 @@
 		const I &it, int f, int t, int c
 	) {
 		if (is_pseudo_valid(f, t, c)) {
-			it(t);
+			it(t, 0);
 		}
 	}
 @end(pseudo moves prereqs)
@@ -714,15 +724,37 @@
 * special treatment for white and black pawns
 
 ```
+@add(pseudo moves prereqs)
+	template<typename I>
+	void add_pawn(
+		const I &it, int f, int t, int c
+	) {
+		if (is_pseudo_valid(f, t, c)) {
+			int r { t / 10 - 2 };
+			if (r == 0 || r == 7) {
+				it(t, WQ * c);
+				it(t, WN * c);
+				it(t, WB * c);
+				it(t, WR * c);
+			} else { 
+				it(t, 0);
+			}
+		}
+	}
+@end(pseudo moves prereqs)
+```
+* pawn promotion
+
+```
 @def(white pawn moves)
 	if (board[f + 10] == 0) {
-		add_if_valid(it, f, f - 10, c);
+		add_pawn(it, f, f + 10, c);
 	}
 	if (opp_c(f + 9, c)) {
-		add_if_valid(it, f, f + 9, c);
+		add_pawn(it, f, f + 9, c);
 	}
 	if (opp_c(f + 11, c)) {
-		add_if_valid(it, f, f + 11, c);
+		add_pawn(it, f, f + 11, c);
 	}
 @end(white pawn moves)
 ```
@@ -745,13 +777,13 @@
 ```
 @def(black pawn moves)
 	if (board[f - 10] == 0) {
-		add_if_valid(it, f, f - 10, c);
+		add_pawn(it, f, f - 10, c);
 	}
 	if (opp_c(f - 9, c)) {
-		add_if_valid(it, f, f - 9, c);
+		add_pawn(it, f, f - 9, c);
 	}
 	if (opp_c(f - 11, c)) {
-		add_if_valid(it, f, f - 11, c);
+		add_pawn(it, f, f - 11, c);
 	}
 @end(black pawn moves)
 ```
@@ -837,7 +869,7 @@
 		}
 	}
 	@mul(revert move);
-	if (! in_check) { it(t); }
+	if (! in_check) { it(t, e); }
 @end(check for check)
 ```
 * perform the move
@@ -845,7 +877,7 @@
 
 ```
 @def(attacks king?)
-	pseudo_moves(i, [&](int m) {
+	pseudo_moves(i, [&](int m, Elem e) {
 		if (board[m] == WK * c) {
 			in_check = true;
 		}
@@ -863,9 +895,6 @@
 * TODO
 
 ## Castling
-* TODO
-
-## Pawn Promotion
 * TODO
 
 ## Clear Board

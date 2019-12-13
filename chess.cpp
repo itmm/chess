@@ -8,36 +8,37 @@
 
 #line 50 "chess.md"
 
+	using Elem = signed char;
 	
-#line 63 "chess.md"
+#line 64 "chess.md"
 
-	constexpr signed char XX { 100 };
-	constexpr signed char X { XX };
-	constexpr signed char EE { 0 };
+	constexpr Elem XX { 100 };
+	constexpr Elem X { XX };
+	constexpr Elem EE { 0 };
 
-#line 74 "chess.md"
+#line 75 "chess.md"
 
-	constexpr signed char WP { 1 };
-	constexpr signed char WR { 2 };
-	constexpr signed char WB { 3 };
-	constexpr signed char WN { 4 };
-	constexpr signed char WQ { 5 };
-	constexpr signed char WK { 6 };
+	constexpr Elem WP { 1 };
+	constexpr Elem WR { 2 };
+	constexpr Elem WB { 3 };
+	constexpr Elem WN { 4 };
+	constexpr Elem WQ { 5 };
+	constexpr Elem WK { 6 };
 
-#line 86 "chess.md"
+#line 87 "chess.md"
 
-	constexpr signed char BP { -1 };
-	constexpr signed char BR { -2 };
-	constexpr signed char BB { -3 };
-	constexpr signed char BN { -4 };
-	constexpr signed char BQ { -5 };
-	constexpr signed char BK { -6 };
+	constexpr Elem BP { -1 };
+	constexpr Elem BR { -2 };
+	constexpr Elem BB { -3 };
+	constexpr Elem BN { -4 };
+	constexpr Elem BQ { -5 };
+	constexpr Elem BK { -6 };
 
-#line 51 "chess.md"
+#line 52 "chess.md"
 ;
-	signed char board[120] {
+	Elem board[120] {
 		
-#line 99 "chess.md"
+#line 100 "chess.md"
 
 	X, XX, XX, XX, XX, XX, XX, XX, XX, X,
 	X, XX, XX, XX, XX, XX, XX, XX, XX, X,
@@ -52,11 +53,11 @@
 	X, XX, XX, XX, XX, XX, XX, XX, XX, X,
 	X, XX, XX, XX, XX, XX, XX, XX, XX, X
 
-#line 53 "chess.md"
+#line 54 "chess.md"
 
 	};
 
-#line 162 "chess.md"
+#line 163 "chess.md"
 
 	inline int f_r_to_idx(
 		int f, int r
@@ -64,20 +65,20 @@
 		return r * 10 + f + 21;
 	}
 
-#line 176 "chess.md"
+#line 177 "chess.md"
 
-	inline signed char get(
+	inline Elem get(
 		int f, int r
 	) {
 		return board[f_r_to_idx(f, r)];
 	}
 
-#line 203 "chess.md"
+#line 204 "chess.md"
 
 	float material { 0.0f };
 	float abs_material { 481.0f };
 
-#line 221 "chess.md"
+#line 222 "chess.md"
 
 	const float _pieces_mat[] {
 		-200.0f, -9.0f, -3.25f, -3.5f,
@@ -88,27 +89,27 @@
 		_pieces_mat + 6
 	};
 
-#line 236 "chess.md"
+#line 237 "chess.md"
 
 	#include <cmath>
 
-#line 243 "chess.md"
+#line 244 "chess.md"
 
-	void add(signed char f) {
-		float m { pieces_mat[f] };
+	void add(Elem e) {
+		float m { pieces_mat[e] };
 		material += m;
 		abs_material += fabs(m);
 	}
 
-#line 254 "chess.md"
+#line 255 "chess.md"
 
-	void sub(signed char f) {
-		float m { pieces_mat[f] };
+	void sub(Elem e) {
+		float m { pieces_mat[e] };
 		material -= m;
 		abs_material -= fabs(m);
 	}
 
-#line 268 "chess.md"
+#line 269 "chess.md"
 
 	bool is_pos(const char *p) {
 		if (p[0] < 'a' || p[0] > 'h') {
@@ -120,7 +121,7 @@
 		return true;
 	}
 
-#line 297 "chess.md"
+#line 298 "chess.md"
 
 	int pos_to_idx(const char *p) {
 		if (! is_pos(p)) { return 0; }
@@ -129,25 +130,23 @@
 		return f_r_to_idx(f, r);
 	}
 
-#line 310 "chess.md"
+#line 311 "chess.md"
 
-	inline void set(
-		int pos, signed char fig
-	) {
+	inline void set(int pos, Elem e) {
 		sub(board[pos]);
-		board[pos] = fig;
+		board[pos] = e;
 		add(board[pos]);
 	}
 
-#line 324 "chess.md"
+#line 323 "chess.md"
 
 	
-#line 354 "chess.md"
+#line 353 "chess.md"
 
 	struct State {
 		int color { 1 };
 		
-#line 983 "chess.md"
+#line 1014 "chess.md"
 
 	bool wh_o_o { true };
 	bool wh_o_o_o { true };
@@ -155,35 +154,35 @@
 	bool bl_o_o_o { true };
 	int e_p_field { 0 };
 
-#line 357 "chess.md"
+#line 356 "chess.md"
 ;
 	} state;
 
-#line 325 "chess.md"
+#line 324 "chess.md"
 ;
 	inline void move(
-		int from, int to
+		int from, int to, int promo
 	) {
 		if (from && to) {
-			set(to, board[from]);
+			set(to, promo ?: board[from]);
 			set(from, 0);
 			
-#line 364 "chess.md"
+#line 363 "chess.md"
 
 	state.color = -state.color;
 
-#line 332 "chess.md"
+#line 331 "chess.md"
 ;
 		}
 	}
 
-#line 371 "chess.md"
+#line 370 "chess.md"
 
 	inline bool is_wh(int c) {
 		return c > 0;
 	}
 
-#line 380 "chess.md"
+#line 379 "chess.md"
 
 	inline bool is_bl(int c) {
 		return c < 0;
@@ -197,28 +196,28 @@
 		pos[2] = '\0';
 	}
 
-#line 442 "chess.md"
+#line 446 "chess.md"
 
 	
-#line 483 "chess.md"
+#line 488 "chess.md"
 
 	inline bool same_c(int p, int c) {
 		return board[p] * c > 0;
 	}
 
-#line 491 "chess.md"
+#line 497 "chess.md"
 
 	inline bool opp_c(int p, int c) {
 		return board[p] * c < 0;
 	}
 
-#line 529 "chess.md"
+#line 536 "chess.md"
 
 	
-#line 514 "chess.md"
+#line 521 "chess.md"
 
 	
-#line 638 "chess.md"
+#line 650 "chess.md"
 
 	bool is_pseudo_valid(
 		int f, int t, int color
@@ -231,18 +230,18 @@
 		return true;
 	}
 
-#line 655 "chess.md"
+#line 667 "chess.md"
 
 	template<typename I>
 	void add_if_valid(
 		const I &it, int f, int t, int c
 	) {
 		if (is_pseudo_valid(f, t, c)) {
-			it(t);
+			it(t, 0);
 		}
 	}
 
-#line 669 "chess.md"
+#line 681 "chess.md"
 
 	template<typename I>
 	void add_row(
@@ -256,20 +255,39 @@
 		}
 	}
 
-#line 515 "chess.md"
+#line 727 "chess.md"
+
+	template<typename I>
+	void add_pawn(
+		const I &it, int f, int t, int c
+	) {
+		if (is_pseudo_valid(f, t, c)) {
+			int r { t / 10 - 2 };
+			if (r == 0 || r == 7) {
+				it(t, WQ * c);
+				it(t, WN * c);
+				it(t, WB * c);
+				it(t, WR * c);
+			} else { 
+				it(t, 0);
+			}
+		}
+	}
+
+#line 522 "chess.md"
 
 	template<typename I>
 	void pseudo_moves(
 		int f, const I &it
 	) {
 		
-#line 626 "chess.md"
+#line 638 "chess.md"
 
 	auto p { board[f] };
 	if (p == EE || p == XX) { return; }
 	int c { is_wh(p) ? 1 : -1 };
 	
-#line 687 "chess.md"
+#line 699 "chess.md"
 
 	if (p == WN || p == BN) {
 		add_if_valid(it, f, f - 21, c);
@@ -282,23 +300,23 @@
 		add_if_valid(it, f, f + 21, c);
 	}
 
-#line 703 "chess.md"
+#line 715 "chess.md"
 
 	if (p == WP) {
 		
-#line 715 "chess.md"
+#line 749 "chess.md"
 
 	if (board[f + 10] == 0) {
-		add_if_valid(it, f, f - 10, c);
+		add_pawn(it, f, f + 10, c);
 	}
 	if (opp_c(f + 9, c)) {
-		add_if_valid(it, f, f + 9, c);
+		add_pawn(it, f, f + 9, c);
 	}
 	if (opp_c(f + 11, c)) {
-		add_if_valid(it, f, f + 11, c);
+		add_pawn(it, f, f + 11, c);
 	}
 
-#line 731 "chess.md"
+#line 765 "chess.md"
 
 	int r { f / 10 - 2 };
 	if (r == 1 && board[f + 10] == 0 &&
@@ -307,23 +325,23 @@
 		add_if_valid(it, f, f + 20, c);
 	}
 
-#line 705 "chess.md"
+#line 717 "chess.md"
 ;
 	} else if (p == BP) {
 		
-#line 744 "chess.md"
+#line 778 "chess.md"
 
 	if (board[f - 10] == 0) {
-		add_if_valid(it, f, f - 10, c);
+		add_pawn(it, f, f - 10, c);
 	}
 	if (opp_c(f - 9, c)) {
-		add_if_valid(it, f, f - 9, c);
+		add_pawn(it, f, f - 9, c);
 	}
 	if (opp_c(f - 11, c)) {
-		add_if_valid(it, f, f - 11, c);
+		add_pawn(it, f, f - 11, c);
 	}
 
-#line 760 "chess.md"
+#line 794 "chess.md"
 
 	int r { f / 10 - 2 };
 	if (r == 6 && board[f - 10] == 0 &&
@@ -332,11 +350,11 @@
 		add_if_valid(it, f, f - 20, c);
 	}
 
-#line 707 "chess.md"
+#line 719 "chess.md"
 ;
 	}
 
-#line 773 "chess.md"
+#line 807 "chess.md"
 
 	if (p == WR || p == BR) {
 		add_row(it, f, c, -10);
@@ -345,7 +363,7 @@
 		add_row(it, f, c, 10);
 	}
 
-#line 785 "chess.md"
+#line 819 "chess.md"
 
 	if (p == WB || p == BB) {
 		add_row(it, f, c, -11);
@@ -354,7 +372,7 @@
 		add_row(it, f, c, 11);
 	}
 
-#line 797 "chess.md"
+#line 831 "chess.md"
 
 	if (p == WQ || p == BQ) {
 		add_row(it, f, c, -11);
@@ -367,7 +385,7 @@
 		add_row(it, f, c, 11);
 	}
 
-#line 813 "chess.md"
+#line 847 "chess.md"
 
 	if (p == WK || p == BK) {
 		add_if_valid(it, f, f - 11, c);
@@ -380,150 +398,157 @@
 		add_if_valid(it, f, f + 11, c);
 	}
 
-#line 630 "chess.md"
+#line 642 "chess.md"
 ;
 
-#line 520 "chess.md"
+#line 527 "chess.md"
 ;
 	}
 
-#line 530 "chess.md"
+#line 537 "chess.md"
 
 	template<typename I>
 	void moves(int f, const I &it) {
 		int c {
 			is_wh(board[f]) ? 1 : -1
 		};
-		pseudo_moves(f, [&](int t) {
+		pseudo_moves(f, [&](
+			int t, Elem e
+		) {
 			
-#line 829 "chess.md"
+#line 863 "chess.md"
 
 	
-#line 590 "chess.md"
+#line 601 "chess.md"
 
+	auto old_f { board[f] };
 	auto old_t { board[t] };
-	move(f, t);
+	move(f, t, e);
 
-#line 830 "chess.md"
+#line 864 "chess.md"
 ;
 	bool in_check { false };
 	for (int i = 0; i < 120; ++i) {
 		if (opp_c(i, c)) {
 			
-#line 845 "chess.md"
+#line 879 "chess.md"
 
-	pseudo_moves(i, [&](int m) {
+	pseudo_moves(i, [&](int m, Elem e) {
 		if (board[m] == WK * c) {
 			in_check = true;
 		}
 	});
 	if (in_check) { break; }
 
-#line 834 "chess.md"
+#line 868 "chess.md"
 
 		}
 	}
 	
-#line 598 "chess.md"
+#line 610 "chess.md"
 
-	move(t, f);
 	set(t, old_t);
+	set(f, old_f);
 
-#line 837 "chess.md"
+#line 871 "chess.md"
 ;
-	if (! in_check) { it(t); }
+	if (! in_check) { it(t, e); }
 
-#line 537 "chess.md"
+#line 546 "chess.md"
 ;
 		});
 	}
 
-#line 547 "chess.md"
+#line 556 "chess.md"
 
 	bool eval_move(
 		int f, int t, int c,
-		float &best_wh, float &best_bl
+		float &best_wh, float &best_bl,
+		Elem e
 	) {
 		bool better { false };
 		
-#line 579 "chess.md"
-
-	
 #line 590 "chess.md"
 
-	auto old_t { board[t] };
-	move(f, t);
+	
+#line 601 "chess.md"
 
-#line 580 "chess.md"
+	auto old_f { board[f] };
+	auto old_t { board[t] };
+	move(f, t, e);
+
+#line 591 "chess.md"
 ;
 	
-#line 606 "chess.md"
+#line 618 "chess.md"
 
 	if (is_wh(c) && material > best_wh) {
 		best_wh = material;
 		better = true;
 	}
 
-#line 616 "chess.md"
+#line 628 "chess.md"
 
 	if (is_bl(c) && material < best_bl) {
 		best_bl = material;
 		better = true;
 	}
 
-#line 581 "chess.md"
+#line 592 "chess.md"
 ;
 	
-#line 598 "chess.md"
+#line 610 "chess.md"
 
-	move(t, f);
 	set(t, old_t);
+	set(f, old_f);
 
-#line 582 "chess.md"
+#line 593 "chess.md"
 ;
 
-#line 553 "chess.md"
+#line 563 "chess.md"
 ;
 		return better;
 	}
 
-#line 443 "chess.md"
+#line 447 "chess.md"
 ;
 	int best_move(
 		int &from, int &to, int color,
-		float &best_wh, float &best_bl
+		float &best_wh, float &best_bl,
+		Elem &promo
 	) {
 		
-#line 499 "chess.md"
+#line 506 "chess.md"
 
 	for (int i = 0; i < 120; ++i) {
 		if (board[i] != XX &&
 			same_c(i, color)
 		) {
 			
-#line 564 "chess.md"
+#line 574 "chess.md"
 
-	moves(i, [&](int m) {
+	moves(i, [&](int m, Elem e) {
 		if (eval_move(
 			i, m, color,
-			best_wh, best_bl
+			best_wh, best_bl, e
 		)) {
 			from = i; to = m;
+			promo = e;
 		}
 	});
 
-#line 504 "chess.md"
+#line 511 "chess.md"
 ;
 		}
 	}
 
-#line 448 "chess.md"
+#line 453 "chess.md"
 ;
 		return is_wh(color) ?
 			best_wh : best_bl;
 	}
 
-#line 458 "chess.md"
+#line 463 "chess.md"
 
 	#include <limits>
 	using nlf =
@@ -533,7 +558,7 @@
 
 	int main() {
 		
-#line 120 "chess.md"
+#line 121 "chess.md"
 
 	const std::string _pieces_board[] {
 		"♚", "♛", "♞", "♝", "♜",
@@ -556,17 +581,17 @@
 			break;
 		}
 		
-#line 135 "chess.md"
+#line 136 "chess.md"
 
 	if (cmd == "p") {
 		std::cout << "\n";
 		
-#line 147 "chess.md"
+#line 148 "chess.md"
 
 	for (int r = 7; r >= 0; --r) {
 		std::cout << (r + 1) << " ";
 		
-#line 187 "chess.md"
+#line 188 "chess.md"
 ;
 	for (int f = 0; f <= 7; ++f) {
 		std::cout << pieces_board[
@@ -574,54 +599,55 @@
 		];
 	}
 
-#line 150 "chess.md"
+#line 151 "chess.md"
 ;
 		std::cout << "\n";
 	}
 	std::cout << "  abcdefgh\n\n";
 
-#line 212 "chess.md"
+#line 213 "chess.md"
 
 	std::cout << "  material: " <<
 		abs_material << " (" <<
 		material << ")\n";
 
-#line 389 "chess.md"
+#line 388 "chess.md"
 
 	std::cout << "  " <<
 		(is_wh(state.color) ? "white" :
 			"black")  << " is moving\n";
 
-#line 138 "chess.md"
+#line 139 "chess.md"
 ;
 		std::cout << "\n";
 		continue;
 	}
 
-#line 284 "chess.md"
+#line 285 "chess.md"
  {
 	const char *cs { cmd.c_str() };
 	if (cmd.size() == 4 &&
 		is_pos(cs) && is_pos(cs + 2)
 	) {
 		
-#line 341 "chess.md"
+#line 340 "chess.md"
 
 	int from { pos_to_idx(cs) };
 	int to { pos_to_idx(cs + 2) };
-	move(from, to);
+	move(from, to, 0);
 
-#line 289 "chess.md"
+#line 290 "chess.md"
 ;
 		continue;
 	}
 } 
-#line 401 "chess.md"
+#line 400 "chess.md"
 
 	if (cmd == "m") {
 		int from { 0 }, to { 0 };
+		Elem promo { EE };
 		
-#line 467 "chess.md"
+#line 472 "chess.md"
 
 	constexpr float inf {
 		nlf::infinity()
@@ -630,13 +656,13 @@
 	float best_b { inf };
 	best_move(
 		from, to, state.color,
-		best_w, best_b
+		best_w, best_b, promo
 	);
 
 #line 404 "chess.md"
 ;
 		if (from && to) {
-			move(from, to);
+			move(from, to, promo);
 			
 #line 431 "chess.md"
 
@@ -644,7 +670,11 @@
 	idx_to_pos(pos, from);
 	std::cout << pos;
 	idx_to_pos(pos, to);
-	std::cout << pos << "\n";
+	std::cout << pos;
+	if (promo) {
+		std::cout << pieces_board[promo];
+	}
+	std::cout << "\n";
 
 #line 407 "chess.md"
 ;
@@ -654,11 +684,11 @@
 		continue;
 	}
 
-#line 874 "chess.md"
+#line 905 "chess.md"
 
 	if (cmd == "c") {
 		
-#line 884 "chess.md"
+#line 915 "chess.md"
 
 	for (int r = 0; r <= 7; ++r) {
 		for (int f = 0; f <= 7; ++f) {
@@ -667,12 +697,12 @@
 	}
 	material = abs_material = 0.0f;
 
-#line 876 "chess.md"
+#line 907 "chess.md"
 ;
 		continue;
 	}
 
-#line 902 "chess.md"
+#line 933 "chess.md"
 
 	if (cmd == "w" || cmd == "b") {
 		int color { cmd == "w" ? 1 : -1 };
@@ -681,20 +711,20 @@
 			std::cin >> piece;
 			if (piece == ".") { break; }
 			
-#line 930 "chess.md"
+#line 961 "chess.md"
 
 	const char *cs { piece.c_str() };
 	if (piece.size() == 3 &&
 		is_pos(cs + 1)
 	) {
 		
-#line 944 "chess.md"
+#line 975 "chess.md"
 
 	int p { pos_to_idx(cs + 1) };
 	switch (cs[0]) {
 		case '.': set(p, 0); break;
 		
-#line 958 "chess.md"
+#line 989 "chess.md"
 
 	case 'P': set(p, color * WP); break;
 	case 'R': set(p, color * WR); break;
@@ -703,26 +733,26 @@
 	case 'Q': set(p, color * WQ); break;
 	case 'K': set(p, color * WK); break;
 
-#line 948 "chess.md"
+#line 979 "chess.md"
 ;
 		default:
 			
-#line 922 "chess.md"
+#line 953 "chess.md"
 
 	std::cerr << "unknown piece " <<
 		piece << "\n";
 
-#line 950 "chess.md"
+#line 981 "chess.md"
 ;
 	}
 	add(board[p]);
 
-#line 935 "chess.md"
+#line 966 "chess.md"
 ;
 		continue;
 	}
 
-#line 970 "chess.md"
+#line 1001 "chess.md"
 
 	if (piece.size() == 2 && is_pos(cs)) {
 		int p { pos_to_idx(cs) };
@@ -730,15 +760,15 @@
 		continue;
 	}
 
-#line 909 "chess.md"
+#line 940 "chess.md"
 ;
 			
-#line 922 "chess.md"
+#line 953 "chess.md"
 
 	std::cerr << "unknown piece " <<
 		piece << "\n";
 
-#line 910 "chess.md"
+#line 941 "chess.md"
 ;
 		}
 		continue;
